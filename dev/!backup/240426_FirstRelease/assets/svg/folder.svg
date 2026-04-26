@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+  <g id="Folder">
+    <rect id="BG" width="25" height="25" style="fill: none;"/>
+    <g id="Folder-2" data-name="Folder">
+      <path id="b" d="M5.8,20.1c-.07,.28,.14,.54,.43,.54h12.48c.7,0,1.32-.48,1.49-1.16l1.55-6.18c.07-.28-.14-.54-.43-.54H8.15c-.3,0-.56,.21-.64,.5l-1.71,6.85Z" style="fill: #e6e6e6;"/>
+      <path id="t" d="M4.27,8.59c0-1.09,.88-1.97,1.97-1.97h3.47c.46,0,.91,.16,1.26,.46l2.09,1.74h5.02c1.09,0,1.97,.88,1.97,1.97v.66H8.15c-.91,0-1.69,.62-1.91,1.49l-1.68,6.75c.04-.15,0,0,0,0-.18-.3-.28-.64-.28-1.02V8.59Z" style="fill: #e6e6e6;"/>
+    </g>
+  </g>
+</svg>

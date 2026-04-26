@@ -1,0 +1,102 @@
+Adobe Illustrator (SVG)
+
+// Simple Path (Linear only)
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104.48 56.59">
+  <polygon points="16.17 14.32 79.51 .57 103.67 42.65 .76 55.98 16.17 14.32" style="fill: #fff; stroke: #000; stroke-miterlimit: 10;"/>
+</svg>
+
+// Bezier + Linear 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.79 61.91">
+  <path d="M24.95,6.08C43.28-1.42,106.62-4.76,117.87,18.58s-18.33,49.58-53.33,41.25S.78,41.91,.78,41.91L24.95,6.08Z" style="fill: #fff; stroke: #000; stroke-miterlimit: 10;"/>
+</svg>
+
+// Compound Path
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 268.27 68.06">
+  <path d="M16.17,14.32L79.51,.57l24.17,42.08L.76,55.98,16.17,14.32ZM148.26,48.07s28.75,9.58,63.75,17.92,64.58-17.92,53.33-41.25S190.76,4.73,172.42,12.23l-24.17,35.83Z" style="fill: #fff; stroke: #000; stroke-miterlimit: 10;"/>
+</svg>
+
+// Red Rectangle
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 206.25 208.33">
+  <rect width="206.25" height="208.33" style="fill: #ff1d25;"/>
+</svg>
+
+// F
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="LogoCanvas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 248.84 357.76">
+  <path id="f" d="M223.75,13.8C207.04,4.6,187.64,0,165.57,0c-33.25,0-63.02,9.61-89.32,28.8-26.31,19.21-38.71,40.28-39.46,63.18-.32,9.7-.52,22.48-.66,36.31H7.75L0,146.69H36c-.13,23.4-.1,47.29-.07,62.94,.06,33.31,1.27,123.21-3.98,133.13-1.89,3.58-7.56,6.1-16.94,6.78-2.9,.21-11.62,.48-11.62,.48v7.75H166.05v-7.75s-13.37-.12-17.81-.48c-9.3-.77-15.27-3.92-17.15-9.17-2.74-7.62-2.73-93.05-2.85-127.69-.05-15.34,.08-41.08,.26-65.99h46.75l8.23-18.4h-54.84c.14-16.83,.28-31.83,.37-41,.2-20.01,2.57-41.5,6.46-54.92,4.46-15.38,14.71-24.14,25.9-24.14,0,0,17.89-.9,16.3,11.62-.41,3.2-3.21,8.23-9.64,15.01-6.43,6.78-9.64,14.36-9.64,22.75,0,11.62,4.46,20.9,13.37,27.84,8.91,6.94,19.21,10.41,30.88,10.41s22.29-3.95,31.85-11.86c9.56-7.9,14.34-17.67,14.34-29.29,0-18.07-8.37-31.71-25.08-40.91Z" style="fill: gray;"/>
+</svg>
+
+// Group > Прямоугольник перевернулся. 
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 77.69 123.8">
+  <rect x="-50.81" y="50.81" width="123.8" height="22.18" transform="translate(-50.81 72.99) rotate(-90)" style="fill: #ff1d25;"/>
+  <polyline points="77.69 108.67 23.09 54.06 77.15 0 77.69 108.67" style="fill: lime;"/>
+  <path d="M19.45,110.85c11.46,13.13,35.72,21.85,58.25-2.18-18.53-18.53-54.61-54.61-54.61-54.61,0,0-27.2,29.8-3.64,56.79Z" style="fill: #fff800;"/>
+</svg>
+
+// Layer with Multiple Objects
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_3" data-name="Layer 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 231.87 50.27">
+  <rect y="3.81" width="46.46" height="46.46" style="fill: #fff800;"/>
+  <circle cx="84.92" cy="27.04" r="23.23" style="fill: #fff800;"/>
+  <polygon points="157.58 6.73 134.12 6.73 122.39 27.04 134.12 47.36 157.58 47.36 169.3 27.04 157.58 6.73" style="fill: #fff800;"/>
+  <path d="M89.1,165.34s36,25.23,87.55-28.15C112.18,110.57,88.23,48.77,88.23,48.77c0,0-62.51,54.72,.88,116.57Z" style="fill: #fff800;"/>
+</svg>
+
+
+Adobe Photoshop ( RMB > two mode export > as [svg] or [css] )
+css
+.Shape_1 {
+  border-width: 2px;
+  border-color: rgb(255, 255, 255);
+  border-style: dashed;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  left: 379px;
+  top: 352px;
+  width: 201px;
+  height: 121px;
+  z-index: 2;
+}
+
+svg
+<svg 
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ width="228px" height="134px">
+<path fill-rule="evenodd"  fill="rgb(237, 28, 36)"
+ d="M-0.000,78.000 C-0.000,78.000 29.094,-30.421 159.000,9.000 C288.906,48.421 195.000,116.000 195.000,116.000 C195.000,116.000 18.061,175.062 -0.000,78.000 Z"/>
+</svg>
+
+
+Adobe After Effects Path
+
+CopyLayer
+After Effects must have keyframes selected from one layer in order to export them as text.
+
+Path (Path1) or Shape Grp (Shape1)
+Adobe After Effects 8.0 Keyframe Data
+
+	Units Per Second	60
+	Source Width	1
+	Source Height	1
+	Source Pixel Aspect Ratio	1
+	Comp Pixel Aspect Ratio	1
+End of Keyframe Data
+
+Path Data
+Not Copy
+
+Cinema 4D Splines 
+- Not Copy from Program (InsideBuffer)
+- Export as .ai 
+- Export as .dxf (not read from ai but supports...)

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+  <g id="Unlock">
+    <rect id="BG" width="25" height="25" style="fill: none;"/>
+    <g id="Unlock-2" data-name="Unlock">
+      <rect id="b" x="6.19" y="11.89" width="13.3" height="8.98" rx="1.33" ry="1.33" style="fill: #e6e6e6;"/>
+      <path id="t" d="M7.81,11.52l1.25-.56c.19-.08,.27-.23,.19-.42v-.03c-.81-1.78,.07-3.94,1.94-4.62,1.71-.61,3.61,.27,4.36,1.96l-.04-.09c.08,.19,.25,.23,.44,.14l1.25-.56c.19-.08,.27-.23,.19-.42v-.03c-1.28-2.85-4.68-4.07-7.5-2.66-2.6,1.31-3.63,4.47-2.51,7.16,.1,.14,.28,.21,.44,.14Z" style="fill: #e6e6e6;"/>
+    </g>
+  </g>
+</svg>

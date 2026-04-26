@@ -1,0 +1,992 @@
+:root{
+--mainbgcolor: rgba(0, 0, 0, 1.0);
+--specialColor: rgba(0, 0, 0, 1.0);
+--specialColorB: rgba(18, 18, 18, 0.95);
+--btnfill: rgba(0, 0, 0, 0.9);
+--btnfillB: rgba(0, 0, 0, 0.95);
+--debug: false;
+}
+
+html, body {
+height: 100vh;
+margin: 0;
+overflow: hidden; /* Hide ScrollPage */
+display: flex;
+flex-direction: column;
+font-family:sans-serif;
+background: var(--mainbgcolor);
+color:white;
+user-select: text;
+}
+
+
+* { -webkit-user-drag: none; }
+
+[hidden] {
+display: none !important;
+}
+
+h2{
+color: #999;
+}
+
+p{
+color: #888;
+}
+
+button{
+background: none;
+border: 2px solid #444;
+border-radius: 0px;
+cursor: pointer;
+
+padding: 24px 42px;
+font-size: 42px;
+color: #888;
+
+white-space: nowrap;  /* Запрещает перенос текста на новую строку */
+flex-shrink: 0;      /* Запрещает кнопке уменьшаться, если она внутри flex-контейнера */
+min-width: max-content; /* Гарантирует, что ширина будет не меньше текста с паддингами */
+}
+
+button:hover {
+background: #222;
+}
+
+button.active {
+background: #999;
+color: #000;
+}
+
+h2, p,a, button {
+pointer-events: auto;
+}
+
+
+
+/* Constructors class */
+.fs {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%; height: 100%;
+}
+
+.fx { display: flex; } /* Главный класс */
+.fg { flex-grow: 1;}
+.cl { flex-direction: column; }
+.jc { justify-content: center; }
+.ca { align-items: center; }
+
+.jcca {
+justify-content: center;
+align-items: center;
+}
+
+.rWrap { /*  /* Horizontal Direction */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap; 
+}
+
+.cWrap { /* Verical Direction */
+display: flex;
+flex-direction: column;
+flex-wrap: wrap; 
+}
+
+.topmost { z-index: 9998; }
+
+.lock {
+pointer-events: none !important;
+user-select: none; /* Запрет выделения текста */
+}
+
+.reverseRow {
+flex-direction: row;
+direction: rtl;
+}
+
+.tempsvg {
+display:none; width:0; height:0;
+}
+
+/* Combine Target Class */
+
+.oCenterPanel { /* fs cWrap jcca topmost */
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+z-index: 9998;
+}
+
+.oWrapper {  /* box inside fs */
+width: 50%;
+max-height: 80vh; /* (80% от высоты экрана) */
+display: flex;
+flex-direction: row;
+direction: rtl;
+}
+
+/* Visual Class */
+
+.oBgStyle {
+background: rgba(0, 0, 0, 0.8);
+}
+
+.panelStyle {
+background: #111; 
+padding: 40px;
+border: 2px solid #444;
+gap: 20px;
+}
+
+/* Special Sections */
+
+#overlayDrop {
+background: rgba(0, 0, 0, 0.5);
+display: none;
+z-index: 9998;
+pointer-events: none;
+}
+
+body.drag #overlayDrop {
+display: block;
+}
+
+#startDescriptor{
+pointer-events: none; 
+}
+#startWindow{
+pointer-events: none; 
+z-index: 1000;
+}
+#mainComment{
+padding-top: 12px;
+}
+
+#mainWindow{
+pointer-events: none; 
+z-index: 7000;
+}
+
+#startDescriptor p, #startDescriptor a {
+margin: 0;
+line-height: 1.8; 
+}
+
+#startDescriptor p{
+color: #555;
+margin-right: 5px !important;
+}
+
+#startDescriptorB{
+padding-bottom: 5vh;
+}
+
+
+#gCanvasWrapper {
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display: inline-block; 
+line-height: 0; 
+z-index: 0;
+}
+
+#globalCanvas {
+display: block; 
+position: absolute;
+top: 0;
+left: 0;
+background:#000;
+}
+
+#eCanvasWrapper {
+position: relative; 
+display: inline-block; 
+}
+
+#eCanvasTextInfo {
+position: absolute;
+left: 34px; /* Change on right */
+top: 555px;
+transform: translateY(-50%); /* Оставить при переносе left\right */
+display: flex;
+flex-direction: column;
+align-items: flex-end; 
+pointer-events: none;
+background: #1c1c1c61 ;
+}
+
+.glyphInfo {
+margin: 2px 20px; 
+text-align: left; /* ReverseThis */
+pointer-events: auto;
+}
+.glyphInfo p{
+color: #9f9c9c !important; 
+}
+
+#editorCanvas{
+background:#1c1c1c;
+pointer-events: auto;
+}
+
+
+/* Button Sections */
+
+.sqbutton {
+background: #111;
+width: 40px;
+height: 40px;
+font-size: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0;
+box-sizing: border-box;
+flex-shrink: 0;
+}
+
+.sbutton {
+padding: 3px 8px;
+font-size: 16px;
+margin: 5px 4px;
+}
+
+.pbutton{
+padding: 0px 8px;
+font-size: 24px;
+border: 1px solid #444;
+}
+
+
+#undoPreserve_btn {
+padding: 24px 48px !important;
+}
+
+.sqbutton.long {
+width: 100px;
+}
+.sqbutton.ex {
+padding: 0px 4px;
+}
+
+.mbutton {
+padding: 12px 16px;
+font-size: 24px;
+margin: 0px 8px;
+}
+
+.ms {
+margin-left: 0px !important; 
+}
+
+.me {
+margin-right: 0px !important; 
+}
+
+.mend {
+margin-right: 42px !important; 
+}
+
+
+/* Special Cases */
+#cmapContainer {
+  
+}
+#leftBorder{
+width: 10px;
+background: rgba(0, 0, 0, 0.93);
+margin-bottom: 5px;
+}
+#switchLabelWrapper{
+padding-left: 22px;
+padding-top: 8px;
+padding-bottom: 8px;
+/* display: inline-flex; */ 
+background: rgba(0, 0, 0, 0.93); 
+}
+
+.sqbutton.cmap{
+padding: 12px 0px;
+height: 40px;
+background: none;
+border: 0px;
+}
+
+#hideAllTIlesBtn:hover {
+background: #222;
+}
+
+.mbutton.cmap{
+padding: 12px 8px;
+border: 0px;
+}
+
+#switchCmapViewer.active {
+background: none;
+color: #888; 
+}
+
+/* Когда кнопка получает класс .active, скрываем старый текст */
+#switchCmapViewer.active span {
+background: none;
+display: none;
+}
+
+/* И выводим новый через псевдоэлемент */
+#switchCmapViewer.active::after {
+content: '[ COMPONENTS ]';
+}
+
+#switchCmapViewer:hover {
+background: #222;
+}
+
+/* Dynamic Spawn */
+
+.PlusCMapButton {
+width: 100%;
+aspect-ratio: 1 / 1;
+background: var(--btnfill);
+box-shadow: 0 0 0 3px var(--btnfill); 
+}
+
+.PlusCMapButton:hover {
+}
+
+
+#SpecialControls{
+min-width: 300px;
+padding-left: 12px;
+padding-top: 20px;
+}
+
+#InfoSection{
+padding-left: 18px;
+padding-top: 13px;
+margin: 0px;
+}
+
+#InfoSection p {
+line-height: 0;
+}
+
+.thinkSlider label {
+white-space: nowrap; /* Запрещает тексту разрываться */
+}
+
+.thinkSlider {
+gap: 10px; 
+margin-bottom: 8px; 
+align-items: center;
+flex-wrap: nowrap;
+font-family:monospace;
+font-size: 20px;
+padding-left: 8px;
+}
+
+.gval {
+display: inline-block;
+min-width: 40px;       /* Подобрано под 4 символа: минус и три цифры */
+text-align: right; /* Числа будут расти влево, не толкая инпут */
+flex-shrink: 0;    /* Чтобы флекс не вздумал сжать само число */
+}
+
+/* Special Cases */
+
+#oPanelLabel {
+font-size: 24px;
+font-weight: 500;
+color: #b1b1b1;
+}
+
+
+/* Readme Markdown */
+#logoFrame {
+padding-top: 70px;
+padding-left: 12px;
+padding-right: 0px;
+}
+
+#readmeContent {
+flex-grow: 1;
+overflow-y: auto;
+padding-right: 10px; 
+
+padding-left: 60px;
+padding-right: 8px;
+color: #888;
+line-height: 1.5;
+padding-top: 42px;
+direction: rtl;
+}
+#readmeContent > * {
+direction: ltr;
+}
+#readmeContent h2{
+color: #b1b1b1;
+}
+
+#readmeContent h3{
+color: #b1b1b1;
+}
+
+#readmeContent p{
+}
+
+#readmeContent a {
+color: #0366d6;
+text-decoration: none;
+}
+
+#readmeContent a:hover {
+text-decoration: underline;
+}
+
+#readmeContent img {
+width: 100%;
+height: auto;
+}
+
+.close-btn {
+margin-bottom: 20px; 
+flex-shrink: 0;
+border: 2px solid #444;
+}
+
+.close-btn:hover {
+background: #222;
+color: #fff;
+border-color: #666;
+}
+
+.hotkey {
+border-bottom: 2px solid currentColor;
+padding-bottom: 1px;
+}
+
+
+#sheart {
+color: #999 !important;
+text-decoration: none;
+}
+#sheart:hover {
+color: #555 !important;
+}
+.link{
+color: #555;
+}
+.link:hover {
+color: #999;
+}
+
+#oAddElementBlock p,
+#exportPanel p {
+flex-grow: 1;
+margin-right: 12px;
+font-size: 20px;
+padding-top: 0px;
+margin-bottom: 6px;
+}
+
+#oAddElementBlock label{
+flex-grow: 1;
+margin-right: 12px;
+font-size: 20px;
+padding-top: 4px;
+color: #888;
+}
+
+#topMenu {
+display: flex;
+flex-shrink: 0;
+background: var(--specialColor);
+padding: 10px;
+}
+
+#innerLayout {
+display: flex;
+flex-direction: row;
+width: 100%;
+overflow: auto; /* hidden чтобы заблокировать полностью*/
+}
+
+#leftColumn {
+display: flex;
+flex-direction: column;
+height: 100vh;
+flex: 1 1 auto;
+min-width: 0;
+overflow: hidden;
+}
+
+#cmpaScrollWrapper {
+flex: 1 1 0; 
+min-height: 130px;
+max-height: 75vh;
+
+overflow-y: auto;
+direction: rtl;
+
+display: flex;
+flex-direction: column;
+
+z-index: 9000;
+
+pointer-events: auto; /* Убираем всё, что может перекрыть левый край  padding: 0px 6px; */
+}
+
+#cmap {
+direction: ltr; /* NormalDirectionGrids (not Reversed) */
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+align-content: start;
+gap:6px;
+pointer-events: none;
+opacity: 1.0;
+}
+
+.tile{
+width: 100%;
+aspect-ratio: 1 / 1; /* Плитка всегда будет квадратом относительно своей ширины */
+background: var(--specialColorB);
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+overflow:hidden;
+box-sizing: border-box; 
+border: 2px solid rgb(80 80 80 / 50%); /* выделяем место для border сразу */
+box-shadow: 0 0 0 3px var(--btnfill);
+-webkit-user-drag: element; 
+pointer-events: auto;
+z-index: 9998;
+transition:
+    color 0.25s ease,  
+    background 0.25s ease, 
+    border-color 0.25s ease;
+}
+
+.tile.template {
+transition: none !important;
+border: 3px dashed rgb(101 3 3 / 70%); /* красный */
+}
+
+.tile.preserve {
+transition: none !important;
+border: 3px dashed rgb(131 131 18 / 50%); /* желтый */
+}
+
+.tile.active {
+transition: none !important;
+background: rgb(20 20 20 / 0.9);
+border-color: rgb(140 140 140 / 0.9);
+}
+
+.tile.selected{
+background: rgb(40 40 40 / 0.9);
+border-color: rgb(140 140 140 / 0.9);
+color: black;
+}
+
+
+
+.tile svg{
+width:80%;
+height:80%;
+}
+
+.tile canvas{
+display:block;
+}
+
+
+
+
+
+#edButtonsRow{
+padding: 20px;
+align-items: center;
+}
+
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+width: 10px;
+height: 8px;
+pointer-events: auto;
+}
+
+::-webkit-scrollbar-track {
+background: #111; 
+pointer-events: auto;
+}
+
+::-webkit-scrollbar-thumb {
+background: #555;
+border-radius: 8px;
+pointer-events: auto;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+pointer-events: auto;
+}
+
+/* 2. Конкретный элемент (например, красный) */
+#cmpaScrollWrapper::-webkit-scrollbar-thumb {
+background: red;
+border-radius: 12px;
+
+}
+
+/* slider */
+
+
+#sliderColumn {
+position: absolute;
+right: -70px;    
+top: 50%;
+transform: translateY(-50%) rotate(-90deg); 
+width: 200px; 
+display: flex;
+align-items: center;
+pointer-events: all; 
+}
+
+.sliderRow {
+position: relative;
+top: 50%;
+width: 160px; 
+display: flex;
+align-items: center;
+pointer-events: all; 
+}
+
+.BarBtns {
+position: absolute;
+z-index: 1000;
+display: flex;
+flex-direction: column;
+gap: 8px; 
+width: auto;
+pointer-events: all; 
+}
+
+.BarBtns.alt {
+left: 10px;
+top: 10px;
+}
+
+.BarBtns.alb {
+top: auto; 
+left: 32px;
+bottom: 32px;
+}
+
+.BarBtns.arb {
+top: auto; 
+right: 32px;
+bottom: 32px;
+}
+
+.barBtnsLine {
+position: relative;
+display: flex;
+flex-direction: row;
+gap: 8px; 
+}
+
+
+/* Стили ползунка */
+input[type=range] {
+-webkit-appearance: none;
+width: 100%;
+background: transparent;
+cursor: pointer;
+pointer-events: auto;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+height: 4px;
+background: #444; 
+}
+
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 8px;
+height: 24px;
+background: #888; 
+border: 1px solid #222;
+margin-top: -11px;
+transition: background 0.2s;
+}
+
+input[type=range]:hover::-webkit-slider-thumb {
+background: #999; /* Эффект наведения */
+}
+
+.mInput, .mSelect, .mSearch {
+background: none;
+border: 2px solid #444;
+border-radius: 0px;
+padding: 12px 24px;
+font-size: 24px;
+color: #888;
+outline: none;
+appearance: none; /* Убирает стандартные стрелки и стили */
+font-family: inherit;
+transition: all 0.2s;
+box-sizing: border-box;
+pointer-events: auto;
+}
+
+
+
+.mInput:hover, .mSelect:hover, .mSearch:hover {
+background: #222;
+}
+
+.mInput.main {
+padding: 24px 42px;
+font-size: 42px;
+field-sizing: content;
+min-width: 100px; /* чтобы не схлопнулся совсем */
+}
+.mInput:hover{
+background: none;
+}
+
+#searchWrapper {
+display: flex;
+flex-direction: row;
+font-size: 24px;
+align-items: center;
+/* margin-top: 9px;  */
+/* margin-left: 14px;  */
+}
+
+#searchWrapper p:empty {
+margin: 0;
+display: none; /*  margin: 0, если хотите оставить элемент в потоке */
+}
+
+#searchWrapper p{
+line-height: 1;
+margin: 0;
+margin: 0px 12px;
+}
+
+.mSearch {
+display: block;
+flex-grow: 1;      /* Заставляет инпут занимать всё свободное место */
+width: 294px;           /*0 - Позволяет флексу правильно рассчитывать базу, убирая "скачки" */
+min-width: 100px;    /* Чтобы инпут не схлопнулся совсем */
+color: #666;
+box-sizing: border-box;
+margin-right: 12px;
+padding: 6px 14px;
+border: 2px solid #2d2d2d;
+}
+
+.mSearch::placeholder {
+color: #444;
+opacity: 1;
+}
+
+.mSelect {
+cursor: pointer;
+width: 100%;
+cursor: pointer;
+width: auto; 
+min-width: 100px; 
+padding-right: 45px !important; /* Бронируем место под стрелку */
+}
+
+.presel {
+margin-left: 16px;
+}
+.postsel {
+margin-right: 0px !important; 
+}
+
+.selectWrapper {
+position: relative;
+display: inline-flex; 
+}
+
+.selectWrapper::after {
+content: "▼";
+font-size: 14px;
+position: absolute;
+right: 15px;
+top: 50%;
+transform: translateY(-50%);
+color: #444;
+pointer-events: none;
+}
+
+/* Для выпадающего меню */
+.mSelect option {
+background: #222;
+color: #888;
+}
+
+#generateApply{
+border: 0px ;
+}
+
+#mainLetterLine{
+border: 0px ;
+}
+
+/* Multi Tile Selection Object */
+#drag-proxy {
+position: fixed;
+top: -1000px;
+left: -1000px;
+pointer-events: none;
+}
+
+.ghost-stack {
+width: 80px;
+height: 80px;
+background: white;
+border: 2px solid #4A90E2;
+border-radius: 8px;
+position: relative;
+box-shadow: 4px 4px 0px rgba(74, 144, 226, 0.3), 8px 8px 0px rgba(74, 144, 226, 0.1);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: sans-serif;
+
+}
+.ghost-badge {
+position: absolute;
+top: -12px;
+right: -12px;
+background: #ff4757;
+color: white;
+border-radius: 50%;
+min-width: 24px;
+height: 24px;
+padding: 2px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: bold;
+font-size: 12px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#drag-proxy .tile {
+width: 70px;  
+height: 70px;
+background: var(--specialColor);;
+border: 1px solid #ccc;
+box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+#readmeFrame {
+width: 100%;
+height: 70vh; /* (70% от высоты экрана) */
+border: 0px solid #333;
+overflow: hidden; 
+}
+
+
+/* Codemirror Custom  */
+#recieptContainer{
+padding: 6px 12px;
+border: 2px dashed rgb(100 100 100 / 70%); 
+background:  var(--btnfill);
+pointer-events: auto;
+}
+
+.CodeMirror {
+background: none;
+color: #ddd;
+font-family: sans-serif, monospace;
+font-size: 15px;
+height: auto; /* работает правильно с viewportMargin */
+overflow: hidden; /* Чтобы не двоились скроллы */
+line-height: 1.5;
+}
+
+.CodeMirror-cursor {
+border-left: 2px solid white !important;
+}
+.CodeMirror-measure { visibility: hidden; position: absolute; }
+.CodeMirror-selected { background: rgba(153, 255, 119, 0.5) !important; }
+.CodeMirror-activeline-background { background: transparent !important; }
+
+/* Цвета синтаксиса */
+
+.cm-string { color: #6abf87 !important; }
+.cm-comment { color: #888  !important; font-style: italic !important;}  /* font-style: italic; */
+.cm-number { color: #ebae20 !important; }
+.cm-atom { color: #c93737 !important; }
+
+.cm-def { color: #ddd !important; }
+
+.cm-variable { color: #ddd !important; }
+.cm-variable-2 { color: #ddd !important; }
+
+.cm-keyword { color: #ad73b7 !important; }
+
+.cm-callee { color: #ffcc66 !important; }
+.cm-property { color: #639bd9 !important; } /* ddd если хочешь cm6 > не хочешь*/
+
+/* Убираем стандартный синий цвет для операторов, если он мешает */
+.cm-operator { color: #ddd; }
+
+.cm-bracket { color: inherit !important; }
+
+
+.cm-cg-variable { color: #c93737 !important; }
+
+.cm-custom-property { color: #639bd9 !important; } /* custom property color */
+.cm-variable-inside-brackets { color: #00f !important; } /* custom style for variables inside brackets */
+
+.cm-self-keyword { 
+    color: #80a143 !important; /* Фиолетовый (как keyword) */
+}
+
+.cm-myfync-keyword { 
+    color: #639bd9 !important; /* Фиолетовый (как keyword) */
+}
+
+#mobileOverlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+    #mobileOverlay {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 24px;
+        z-index: 9999;
+        padding: 20px;
+}

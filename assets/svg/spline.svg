@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
+  <g id="bezier">
+    <rect id="BG" width="25" height="25" style="fill: none;"/>
+    <g id="icon">
+      <path d="M5.13,9.3c0,10.73,14.74,10.25,14.74,0" style="fill: none; stroke: #e6e6e6; stroke-miterlimit: 10; stroke-width: 1.36px;"/>
+      <circle cx="12.5" cy="17.17" r="2.59" style="fill: #e6e6e6; stroke: #1a1a1a; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <circle cx="19.87" cy="9.58" r="2.59" style="fill: #e6e6e6; stroke: #1a1a1a; stroke-miterlimit: 10; stroke-width: 2px;"/>
+      <circle cx="5.13" cy="9.58" r="2.59" style="fill: #e6e6e6; stroke: #1a1a1a; stroke-miterlimit: 10; stroke-width: 2px;"/>
+    </g>
+  </g>
+</svg>

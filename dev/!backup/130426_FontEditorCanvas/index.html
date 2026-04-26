@@ -1,0 +1,322 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Font Editor / Canvas</title>
+
+<!-- comment 
+-->
+
+<link rel="stylesheet" href="./libs/codemirror.min.css">
+<link rel="stylesheet" href="style.css">
+
+<script src="./libs/opentype.min.js"></script>
+<script src="./libs/fonteditor-core.min.js"></script>
+<!--
+this package from:
+https://github.com/hybridherbst/opentype.js
+
+source opentype.js (without variable implementation):
+https://unpkg.com/opentype.js@latest/dist/opentype.min.js
+-->
+
+<script src="./libs/polygon-clipping.umd.min.js"></script>
+<script src="./libs/paper-core.min.js"></script>
+<script src="./libs/decompress_binding.js"></script>
+<script src="./libs/marked.umd.js"></script>
+
+<!-- CM v5.62.0 --> 
+<script src="./libs/codemirror.js"></script> 
+<script src="./libs/javascript.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<input type="file" id="bgFileInput" accept="image/*" hidden>
+
+<svg id="svg-parser" style="display:none; width:0; height:0;"></svg>
+
+<div id="overlayDrop" class="fs"></div>
+
+
+
+<div id="sampleCanvasWrapper">
+
+	<div id="sCanvasControls" class="" hidden>
+			<div id="sCanvasRowBtns" class="BarBtns alb" >
+				<div id="sRefBtns" class="barBtnsLine">
+					<button id="EXPAND_SC_BG" class="sqbutton" title="Background Image">BG</button>
+
+					<button id="LOAD_SC_BG" class="sqbutton" title="Load Image from Disk" hidden>
+						<img src="/assets/svg/folder.svg" alt="folder icon" width="30" height="30">
+					</button>
+
+				  <div id="sliderRowS" class="sliderRow expandable" hidden>
+						<input id="bgOpacityRangeS" type="range" min="0.0" max="1" step="0.01" value="0.30" aria-label="background opacity"/>
+					</div>
+				</div>
+			</div>
+
+			<div id="sCanvasLbBtns" class="BarBtns arb" >
+				<div id="sExportBtns" class="barBtnsLine">
+					<button id="eFromCanvas" class="sqbutton long" title="Export Font">EXPORT</button>
+				</div>
+			</div>
+	    </div>
+
+	<canvas id="sampleCanvas" width="1920" height="1080" ></canvas>
+</div>
+
+
+
+<div id="oStartWindow">
+	<div id="helloSubline" class="oCenterPanel">		
+			<div id="pusher" class="fg" ></div>
+
+			<div id="helloSublineA" class="rWrap ca " >
+				<p>Based on </p>
+				<a class="link" href="https://kekee000.github.io/fonteditor/index-en.html" >fontEditor</a>
+				<p>,</p>
+				<a class="link" href="https://github.com/hybridherbst/opentype.js" >openType fork</a>
+				<p>,</p>
+				<a class="link" href="https://github.com/paperjs/paper.js/" >paper.js</a>
+				<p>,</p>
+				<a class="link" href="https://github.com/markedjs/marked" >marked</a>
+				<p>,</p>
+			</div>
+
+			<div id="helloSublineB" class="rWrap ca " >
+				<a class="link" href="https://github.com/byte-foundry/prototypo/" >protoTyp-O</a>
+				<p></p>
+				<p>&</p>
+				<a class="link" href="https://github.com/codemirror/dev/" >codeMirror</a> <p></p>
+				<p>— [</p> <a id="sheart" href="">❤</a> <p></p> <p>]</p>
+			</div>
+	</div>
+
+	<div id="helloWindow" class="oCenterPanel">
+		<h2>Font Editor?</h2>
+
+		<div id="EnterRow" class="rWrap ca" >
+			<input type="text"  id="gsSLetterLine" class="mInput main" value="А Нука"> <!-- autofocus -->
+			<button id="generateApply">!</button>
+		</div>
+
+		<p>... or Drag & Drop TTF / OTF font file</p>
+
+	</div>
+</div>
+
+<div id="oMainWindow" hidden>
+
+	<div id="cPanel"> 
+		<div id="cPanelInfo" class="rWrap fg " >
+			<div id="SpecialControls" class="cWrap"></div>
+			<div id="InfoSection" class="cWrap"></div>
+		</div>
+
+		<div id="cPanelRow" class="rWrap ca" >
+			<button id="aboutBtn"  class="mbutton" hidden>[ ABOUT ]</button>
+			<button id="exportPanelBtn"  class="mbutton" hidden>[ SAVE ]</button>
+			<button id="glyphMapBtn"  class="mbutton active" hidden>[ GMAP ]</button>
+	     	<button id="openPanel" class="mbutton mend" >&nbsp;*&nbsp;</button>
+		</div>
+	</div>
+
+	<div id="innerLayout">
+
+		<div id="leftColumn">
+
+		  <div id="recieptContainer" hidden>
+		  </div>
+			
+			<div id="cmapContainer" >
+
+				<div id="switcLabelWrapper" class="rWrap ca" >
+					<button id="switchCmapViewer" class="mbutton msa"><span>[ GLYPHS ]</span></button>
+				</div>
+
+				<div id="searchWrapper" hidden>
+						<p id="sLogout" ></p>
+						<input type="text"  id="searchBar" class="mSearch" value="" placeholder="[ ctrl+f ] > hide sort...">	   
+			  </div> 
+
+			  <div id="cmpaScrollWrapper">
+			      <div id="cmap"></div>
+			  </div>
+		  </div>
+
+		</div>
+
+		<div id="edCanvasWrapper" hidden> 
+
+			<div id="overlayEditorCanvas" hidden></div>
+
+			<div id="eCanvasRowBtns" class="BarBtns alt">
+				
+				<div id="RefBtns" class="barBtnsLine">
+					<button id="EXPAND_ED_BG" class="sqbutton" title="Background Image">BG</button>
+
+					<button id="LOAD_ED_BG" class="sqbutton" title="Load Image from Disk" hidden>
+						<img src="/assets/svg/folder.svg" alt="folder icon" width="30" height="30">
+					</button>
+
+					<div id="sliderRowE" class="sliderRow expandable" hidden>
+						<input id="bgOpacityRangeE" type="range" min="0.0" max="1" step="0.01" value="0.30" aria-label="background opacity"/>
+					</div>
+				</div>
+
+				<div id="InstrBtns" class="barBtnsLine" hidden>
+					<button id="SELECTOR" class="sqbutton" title="Tools">
+						<img src="/assets/svg/selectA.svg" alt="selection tool" width="30" height="30">
+					</button>
+					<button id="PEN" class="sqbutton" title="Pen Tool" hidden>
+						<img src="/assets/svg/penPlus.svg" alt="pen tool" width="30" height="30">
+					</button>
+					<button id="RECT" class="sqbutton" title="Rect Tool" hidden>
+						<img src="/assets/svg/rect.svg" alt="rect tool" width="30" height="30">
+					</button>
+				</div>
+
+				<div id="HornersBtns" hidden>
+					<button id="bezFill" class="sqbutton" title="Group Transform">
+						<img src="/assets/svg/triangleWhiteFill.svg" alt="rect tool" width="30" height="30">
+					</button>
+
+					<button id="bezCorner" class="sqbutton active" title="Points Transform">
+						<img src="/assets/svg/triangleBlackStroke.svg" alt="selection tool" width="30" height="30">
+					</button>
+				</div>
+
+	  	</div>
+
+			<canvas id="editorCanvas" width="1000" height="1000"></canvas>
+			
+			<div id="edButtonsRow" class="rWrap jc">
+				<button id="GlyphInfo"   class="mbutton"><span class="hotkey">s</span>tats</button>
+				<button id="pEditModeB"  class="mbutton" hidden >[ f ] type</button>
+				<button id="dispGuides"  class="mbutton"><span class="hotkey">g</span>uide</button>
+				<button id="bezierMode"  class="mbutton"><span class="hotkey">h</span>orner</button>
+			  <button id="closeEditor" class="mbutton">close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="oExportPanel" class="oCenterPanel oBgStyle" hidden>
+	<div id="wrapperSetting" class="cWrap panelStyle">
+		
+		<p>Export Fenerate Options...</p>
+		
+		<div id="eFontnameLine" class="rWrap" >
+			<p>familyName</p>
+			<input type="text"  id="eFontname" class="mInput" value="">
+		</div>
+
+		<div id="eStylenameLine" class="rWrap" >
+			<p>styleName</p>
+			<input type="text"  id="eStylename" class="mInput" value="">
+		</div>
+
+		<div id="eDesignerLine" class="rWrap" >
+			<p>designer</p>
+			<input type="text"  id="eDesigner" class="mInput" value="">
+		</div>
+
+		<div id="oExportComment" class="rWrap ca" hidden></div>
+
+		<div id="oBtnslRow" class="rWrap jc" >
+			<button id="closeExport"  class="mbutton" >[ ✕ ]</button>
+			<button id="eRecieptBtn"  class="mbutton" >[&nbsp;&nbsp;.FE ? ]</button>
+			<button id="customExport" class="mbutton" >[ SAVE .TTF ]</button>
+		</div>
+
+	</div>
+</div>
+
+<div id="oAddElementBlock" class="oCenterPanel oBgStyle" hidden>
+	<div id="wrapperSetting" class="cWrap panelStyle">
+
+		<h2 id="oPanelLabel">Create mew glyph....</h2>
+
+		<div id="oMultiSettingBtnsLine" class="rWrap jc" >
+			<div class="selectWrapper">
+			  <select class="mSelect" id="languageSelect">
+			    <option value="RU">RU</option>
+			    <option value="US">US</option>
+			  </select>
+			</div>
+
+			<button id="LOVERCASE" class="mbutton presel" >[ LOVERCASE ]</button>
+			<button id="NUMBERS" class="mbutton" >[ 4 ]</button>
+			<button id="SYMBOLS" class="mbutton me" >[ ! ]</button>
+		</div>
+
+		<div id="oMultiLine" class="rWrap ca" >
+			<input type="text"  id="gsLetterLine" class="mInput fg" value="">
+		</div>
+
+		<div id="oNameLine" class="rWrap ca" >
+			<label id="oNameLabel" for="oNameInput">GlyphName</label>
+			<input type="text"  id="oNameInput" class="mInput" value="">
+		</div>
+
+		<div id="oUnicodeLine" class="rWrap ca" >
+			<label id="oUnicodeLabel" for="oUnicodeInput">Unicode</label>
+			<input type="text"  id="oUnicodeInput" class="mInput" value="" disabled>
+		</div>
+
+
+		<div id="oTypeSelectLine" class="rWrap ca" hidden>
+			<label id="oTypeLabel" for="oTypeSelect">cType</label>
+			
+			<div class="selectWrapper" >
+			  <select class="mSelect" id="oTypeSelect">
+			    <option value="fill">Fill</option>
+			    <option value="mask">Mask</option>
+			  </select>
+			</div>
+
+		</div>
+
+
+		<div id="oCommentLine" class="rWrap" hidden></div>
+
+		<div id="oAddElemsBtns" class="rWrap jc" >
+			<button id="cancelPushBtn" class="mbutton" >[ ✕ ]</button>
+			<button id="pushBtn"  class="mbutton" >[ ► ]</button>
+		</div>
+
+	</div>
+</div>
+
+<div id="oNote" class="oCenterPanel oBgStyle" hidden>
+	<div id="windowNote" class="oNoteWrapper panelStyle">
+
+		<button id="closeNote" class="sqbutton close-btn">✕</button>
+		<div id="readmeСontent" class="markdownBody" ></div>
+	
+	</div>
+
+</div>
+
+
+
+
+
+<script src="main.js"></script>
+</body>
+</html>

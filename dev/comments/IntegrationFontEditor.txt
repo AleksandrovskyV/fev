@@ -1,0 +1,63 @@
+// Интеграция fonteditor-core для экспорта .ttf
+
+//Лицензия (MIT)
+Свобода: Можно использовать в коммерческих проектах, изменять и распространять.
+Условие: Нужно сохранять уведомление об авторских правах (оригинальный файл LICENSE) в вашем коде или документации.
+
+1. Сделали форк библиотеки
+https://github.com/kekee000/fonteditor-core
+
+2. В корневой директории создали два файла
+/webpack.config.js - конфигурация, для сборки минифированного файла 
+/empty.js - чтобы вырезать проблемный WOFF2 (WebAssembly)
+
+// Содержимое empty.js
+module.exports = {}; 
+
+// Содержимое webpack.config.js
+const path = require('path');
+const webpack = require('webpack');
+
+module.exports = {
+  mode: 'production',
+  entry: './src/main.js', 
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'fonteditor-core.min.js',
+    library: 'fonteditor',
+    libraryTarget: 'umd',
+    globalObject: 'this'
+  },
+  resolve: {
+    alias: {
+      './woff2ttf': path.resolve(__dirname, 'empty.js'),
+      '../woff2ttf': path.resolve(__dirname, 'empty.js')
+    }
+  },
+  node: {
+    fs: 'empty',
+    path: 'empty',
+    Buffer: true
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.NormalModuleReplacementPlugin(
+        /woff2/,
+        path.resolve(__dirname, 'empty.js')
+    )
+  ]
+};
+
+3. Сборка
+В локальной директории запустили GitBash и выполнили
+npm install
+- чтобы установить зависимости самой библиотеки
+npm install --save-dev webpack@4 webpack-cli buffer
+- чтобы установить инструменты сборки
+npx webpack
+- чтобы упаковать в fonteditor-core.min.js
+
+4. Теперь на странице доступна как
+<script src="dist/fonteditor-core.min.js"></script>

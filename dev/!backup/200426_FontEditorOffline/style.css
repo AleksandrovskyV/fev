@@ -1,0 +1,739 @@
+:root{
+--mainbgcolor: #111; /*rgba(0, 0, 0, 1.0); */
+--specialColor: #333;
+--btnfill:  #111; /*rgba(0, 0, 0, 0.84); */
+--debug: false;
+}
+
+html, body {
+height: 100vh;
+margin: 0;
+overflow: hidden; /* Hide ScrollPage */
+display: flex;
+flex-direction: column;
+font-family:sans-serif;
+background: var(--mainbgcolor);
+color:white;
+}
+
+[hidden] {
+display: none !important;
+}
+
+h2{
+color: #999;
+}
+
+p{
+color: #888;
+}
+
+button{
+background: none;
+border: 2px solid #444;
+border-radius: 0px;
+cursor: pointer;
+
+padding: 24px 42px;
+font-size: 42px;
+color: #888;
+
+white-space: nowrap;  /* Запрещает перенос текста на новую строку */
+flex-shrink: 0;      /* Запрещает кнопке уменьшаться, если она внутри flex-контейнера */
+min-width: max-content; /* Гарантирует, что ширина будет не меньше текста с паддингами */
+}
+
+button:hover {
+background: #222;
+}
+
+button.active {
+background: #999;
+color: #000;
+}
+
+h2, p, button {
+pointer-events: auto;
+}
+
+/* Global class */
+
+.rWrap {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap; 
+}
+
+.cWrap {
+display: flex;
+flex-direction: column;  
+}
+
+.ca {
+align-items: center;
+}
+
+.jc {
+justify-content: center;
+}
+
+.fg {
+flex-grow: 1;
+}
+
+.fs_overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+
+/* Button Sections */
+
+.sqbutton {
+background: #111;
+width: 40px;
+height: 40px;
+font-size: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0;
+box-sizing: border-box;
+flex-shrink: 0;
+}
+
+.sbutton {
+padding: 3px 8px;
+font-size: 16px;
+margin: 5px 4px;
+}
+
+#undoPreserve_btn {
+padding: 24px 48px !important;
+}
+
+.sqbutton.long {
+padding: 0px 24px;
+}
+
+.mbutton {
+padding: 12px 24px;
+font-size: 24px;
+margin: 0px 8px;
+}
+
+.ms {
+margin-left: 12px;
+margin-top: 12px;
+}
+
+.me {
+margin-right: 42px !important; 
+}
+
+.msa {
+margin-left: 0px;
+margin-top: 8px;
+border: 0px;
+}
+
+/* Special Cases */
+
+#switchCmapViewer.active {
+background: none;
+color: #888; 
+}
+
+#switchCmapViewer.active:hover {
+background: #222;
+}
+
+/* Когда кнопка получает класс .active, скрываем старый текст */
+#switchCmapViewer.active span {
+display: none;
+}
+
+/* И выводим новый через псевдоэлемент */
+#switchCmapViewer.active::after {
+content: '[ COMPONENTS ]';
+}
+
+/* Dynamic Spawn */
+
+.PlusCMapButton {
+background: var(--btnfill);
+}
+
+.PlusCMapButton:hover {
+}
+
+
+#SpecialControls{
+min-width: 300px;
+padding-left: 12px;
+padding-top: 20px;
+}
+
+#InfoSection{
+padding-left: 18px;
+padding-top: 13px;
+margin: 0px;
+}
+
+#InfoSection p {
+line-height: 0;
+}
+
+.thinkSlider label {
+white-space: nowrap; /* Запрещает тексту разрываться */
+}
+
+.thinkSlider {
+gap: 10px; 
+margin-bottom: 8px; 
+align-items: center;
+flex-wrap: nowrap;
+font-family:monospace;
+font-size: 20px;
+padding-left: 8px;
+}
+
+.gval {
+display: inline-block;
+min-width: 40px;       /* Подобрано под 4 символа: минус и три цифры */
+text-align: right; /* Числа будут расти влево, не толкая инпут */
+flex-shrink: 0;    /* Чтобы флекс не вздумал сжать само число */
+}
+
+/* Special Cases */
+
+#oPanelLabel {
+font-size: 24px;
+font-weight: 500;
+color: #b1b1b1;
+}
+
+#overlayDrop {
+background: rgba(0, 0, 0, 0.5);
+display: none;
+z-index: 9999;
+pointer-events: none; 
+}
+
+body.drag #overlayDrop {
+display: block;
+}
+
+.overlayWindow {
+background: rgba(0, 0, 0, 0.8);
+z-index: 9500;
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.window {
+background: #111; 
+padding: 40px;
+border: 2px solid #444;
+display: flex;
+flex-direction: column;
+gap: 20px; 
+}
+
+.note{ 
+width: 50%;
+max-height: 80vh; /* (80% от высоты экрана) */
+display: flex;
+flex-direction: column;
+}
+
+
+/* Readme Markdown */
+#readmeСontent {
+flex-grow: 1;
+overflow-y: auto;
+padding-right: 10px; 
+padding: 0px 80px;
+color: #888;
+line-height: 1.5;
+padding-top: 42px;
+}
+
+#readmeСontent h2{
+color: #b1b1b1;
+}
+
+#readmeСontent h3{
+color: #b1b1b1;
+}
+
+#readmeСontent p{
+}
+
+#readmeСontent a {
+color: #0366d6;
+text-decoration: none;
+}
+
+#readmeСontent a:hover {
+text-decoration: underline;
+}
+
+#readmeСontent img {
+width: 100%;
+height: auto;
+}
+
+.close-btn {
+margin-bottom: 20px; 
+flex-shrink: 0;
+border: 2px solid #444;
+}
+
+.close-btn:hover {
+background: #222;
+color: #fff;
+border-color: #666;
+}
+
+.hotkey {
+border-bottom: 2px solid currentColor;
+padding-bottom: 1px;
+}
+
+#oStartWindow{
+pointer-events: none; 
+}
+
+#dropzone, #subComment{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+
+}
+
+#dropzone button,
+#dropzone h2,
+#dropzone p,
+#subComment a,
+#subComment p {
+  pointer-events: auto;
+}
+
+#subComment p, #subComment a {
+margin: 0;
+line-height: 1.8; 
+}
+
+#subCommentB{
+padding-bottom: 5vh;
+}
+
+#subComment p{
+color: #555;
+margin-right: 5px !important;
+}
+
+#sheart {
+color: #999 !important;
+text-decoration: none;
+}
+#sheart:hover {
+color: #555 !important;
+}
+.link{
+color: #555;
+}
+.link:hover {
+color: #999;
+}
+
+#dropzone h2{
+font-weight: 500;
+}
+
+#oAddElementBlock p,
+#oExportPanel p {
+flex-grow: 1;
+margin-right: 12px;
+font-size: 20px;
+padding-top: 0px;
+margin-bottom: 6px;
+}
+
+#oAddElementBlock label{
+flex-grow: 1;
+margin-right: 12px;
+font-size: 20px;
+padding-top: 4px;
+color: #888;
+}
+
+#cPanel {
+display: flex;
+flex-shrink: 0;
+background: #333;
+padding: 10px;
+z-index: 2000;
+}
+
+#innerLayout {
+display: flex;
+flex-direction: row;
+width: 100%;
+overflow: auto; /* hidden чтобы заблокировать полностью*/
+}
+
+#leftColumn {
+display: flex;
+flex-direction: column;
+height: 100vh;
+flex: 1 1 auto;
+min-width: 0;
+overflow: hidden;
+}
+
+
+#cmpaScrollWrapper {
+flex: 1 1 0; 
+min-height: 130px;
+overflow-y: auto;
+direction: rtl;
+
+display: flex;
+flex-direction: column;
+}
+
+#cmap {
+direction: ltr; /* NormalDirectionGrids (not Reversed) */
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+grid-auto-rows: 120px;
+gap: 6px;
+padding: 6px;
+}
+
+.tile{
+background:#1c1c1c;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+overflow:hidden;
+box-sizing: border-box; 
+border: 3px solid transparent; /* выделяем место для border сразу */
+}
+
+.tile.template {
+border: 3px dashed rgb(101 3 3 / 70%); /* красный */
+}
+
+.tile.preserve {
+border: 3px dashed rgb(131 131 18 / 50%); /* желтый, полупрозрачный, dashed */
+}
+
+.tile.active {
+border-color: #555; /* меняем цвет существующей рамки */
+/* outline: 2px solid rgb(131 131 131 / 50%);  */
+/* outline-offset: -4px; /* заносим его чуть внутрь плитки */
+}
+
+.tile svg{
+width:80%;
+height:80%;
+}
+
+.tile canvas{
+display:block;
+}
+
+#edCanvasWrapper {
+position: relative; 
+display: inline-block; 
+}
+
+#editorCanvas{
+background:#1c1c1c;
+}
+
+#overlayEditorCanvas {
+position: absolute; 
+display: block; 
+pointer-events: none; 
+/*line-height: 0;*/
+}
+
+.glyphInfo {
+margin-left: 50px;
+margin-top: 472px;
+pointer-events: auto; 
+}
+
+#sampleCanvas {
+max-width: 100%;
+height: auto;
+background:#000;
+z-index: 9999;
+}
+
+#edButtonsRow{
+padding: 20px;
+align-items: center;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+width: 10px;
+height: 8px;
+}
+
+::-webkit-scrollbar-track {
+background: #111; 
+}
+
+::-webkit-scrollbar-thumb {
+background: #555;
+border-radius: 8px;
+}
+
+/* 2. Конкретный элемент (например, красный) */
+#cmpaScrollWrapper::-webkit-scrollbar-thumb {
+background: red;
+border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #555;
+}
+
+/* slider */
+#sampleCanvasWrapper {
+position: relative; 
+display: inline-block; 
+line-height: 0; 
+}
+
+#sliderColumn {
+position: absolute;
+right: -70px;    
+top: 50%;
+transform: translateY(-50%) rotate(-90deg); 
+z-index: 999;
+width: 200px; 
+display: flex;
+align-items: center;
+pointer-events: all; 
+}
+
+.sliderRow {
+position: relative;
+top: 50%;
+z-index: 999;
+width: 160px; 
+display: flex;
+align-items: center;
+pointer-events: all; 
+}
+
+.BarBtns {
+position: absolute;
+left: 10px;
+top: 10px;
+z-index: 1000;
+display: flex;
+flex-direction: column;
+gap: 8px; 
+width: auto;
+pointer-events: all; 
+}
+
+.barBtnsLine {
+position: relative;
+display: flex;
+flex-direction: row;
+gap: 8px; 
+}
+
+/* Стили ползунка */
+input[type=range] {
+-webkit-appearance: none;
+width: 100%;
+background: transparent;
+cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+height: 4px;
+background: #444; 
+}
+
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 8px;
+height: 24px;
+background: #888; 
+border: 1px solid #222;
+margin-top: -11px;
+transition: background 0.2s;
+}
+
+input[type=range]:hover::-webkit-slider-thumb {
+background: #999; /* Эффект наведения */
+}
+
+.mInput, .mSelect, .mSearch {
+background: none;
+border: 2px solid #444;
+border-radius: 0px;
+padding: 12px 24px;
+font-size: 24px;
+color: #888;
+outline: none;
+appearance: none; /* Убирает стандартные стрелки и стили */
+font-family: inherit;
+transition: all 0.2s;
+box-sizing: border-box;
+}
+
+#searchWrapper {
+display: flex;
+flex-direction: row;
+font-size: 24px;
+align-items: center;
+margin-top: 9px;
+margin-left: 14px;
+}
+
+#searchWrapper p:empty {
+margin: 0;
+display: none; /*  margin: 0, если хотите оставить элемент в потоке */
+}
+
+#searchWrapper p{
+line-height: 1;
+margin: 0;
+margin: 0px 12px;
+}
+
+.mSearch {
+display: block;
+width: 99%;
+color: #666;
+box-sizing: border-box;
+}
+
+.mSearch::placeholder {
+color: #444;
+opacity: 1;
+}
+
+.mInput:hover, .mSelect:hover, .mSearch:hover {
+background: #222;
+}
+
+.mSelect {
+cursor: pointer;
+width: 100%;
+cursor: pointer;
+width: auto; 
+min-width: 100px; 
+padding-right: 45px !important; /* Бронируем место под стрелку */
+}
+
+.presel {
+margin-left: 16px;
+}
+.postsel {
+margin-right: 0px !important; 
+}
+
+.selectWrapper {
+position: relative;
+display: inline-flex; 
+}
+
+.selectWrapper::after {
+content: "▼";
+font-size: 14px;
+position: absolute;
+right: 15px;
+top: 50%;
+transform: translateY(-50%);
+color: #444;
+pointer-events: none;
+}
+
+/* Для выпадающего меню */
+.mSelect option {
+background: #222;
+color: #888;
+}
+
+#recieptContainer{
+padding: 6px 12px;
+background: black;
+}
+
+.CodeMirror {
+background: black;
+color: #ddd;
+font-family: sans-serif, monospace;
+font-size: 15px;
+height: auto; /* работает правильно с viewportMargin */
+overflow: hidden; /* Чтобы не двоились скроллы */
+line-height: 1.5;
+}
+
+.CodeMirror-cursor {
+border-left: 2px solid white !important;
+}
+.CodeMirror-measure { visibility: hidden; position: absolute; }
+.CodeMirror-selected { background: rgba(153, 255, 119, 0.5) !important; }
+.CodeMirror-activeline-background { background: transparent !important; }
+
+/* Цвета синтаксиса */
+
+.cm-string { color: #6abf87 !important; }
+.cm-comment { color: #888  !important; font-style: italic !important;}  /* font-style: italic; */
+.cm-number { color: #ebae20 !important; }
+.cm-atom { color: #c93737 !important; }
+
+.cm-def { color: #ddd !important; }
+
+.cm-variable { color: #ddd !important; }
+.cm-variable-2 { color: #ddd !important; }
+
+.cm-keyword { color: #ad73b7 !important; }
+
+.cm-callee { color: #ffcc66 !important; }
+.cm-property { color: #639bd9 !important; } /* ddd если хочешь cm6 > не хочешь*/
+
+/* Убираем стандартный синий цвет для операторов, если он мешает */
+.cm-operator { color: #ddd; }
+
+.cm-bracket { color: inherit !important; }
+
+
+.cm-cg-variable { color: #c93737 !important; }
+
+.cm-custom-property { color: #639bd9 !important; } /* custom property color */
+.cm-variable-inside-brackets { color: #00f !important; } /* custom style for variables inside brackets */
+
+.cm-self-keyword { 
+    color: #80a143 !important; /* Фиолетовый (как keyword) */
+}
+
+.cm-myfync-keyword { 
+    color: #639bd9 !important; /* Фиолетовый (как keyword) */
+}

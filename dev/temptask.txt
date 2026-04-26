@@ -1,0 +1,64 @@
+
+
+
+////////////
+
+old
+
+        const item = {
+            index: newIndex,
+            unicode: ucode || null,
+            name: newName,
+            glyph: newGlyph,
+            font: font,
+            template: newGlyph._templateFlag
+        };
+
+new
+        const item = {
+            index: glyph.index || i,
+            rindex: glyph.index ? false : true, // используется корректный индекс или нет
+            unicode: glyph.unicode || undefined,
+            name: glyph.name || `Unknow ${i}`,
+            glyph: glyph || null,
+            font: targetFont,
+            template: glyph._templateFlag || false,
+            compmask: glyph._compMaskFlag || false,
+        };
+
+
+//////
+
+Меняем 
+const item = glyphArray.find(it => it.index === index);
+currentGlyph.name > currentItem.name
+
+
+////////// ЗАМЕНИТЬ ВСЕ currentGlyphIndex > currentItemIndex НА currentItemIndex и currentItem
+
+currentItem = null; 
+currentItemIndex = null;
+
+....
+currentDataArray
+const foundName = compArray.find(item => item.name === newName);
+//...on
+const foundName = currentDataArray.find(item => item.name === newName);
+// on
+const item = glyphArray[arrayIndex]; 
+
+
+const newIndex = font.glyphs.length; 
+//...on
+const newIndex = compArray.length;
+
+
+>>> LAST CHECKS
+>>> redrawCurrentGlyphPath() (ссылается на currentItem) +
+>>> updateTileForGlyphOld() > updateTileForGlyph()
+>>> updateTileForGlyph()
+
+
+
+
+

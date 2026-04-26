@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="font editor / custom edition..." />
+
+<meta property="og:title" content="fenerate?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vsky.space/fe">
+<meta property="og:description" content="font editor / custom edition...">
+<meta property="og:image" content="https://vsky.space/fe/assets/cover.jpg">
+<meta property="og:image:secure_url" content="https://vsky.space/fe/assets/cover.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="fenerate?">
+<meta name="twitter:description" content="font editor / custom edition...">
+<meta name="twitter:image" content="https://vsky.space/fe/assets/cover.jpg">
+<meta name="twitter:site" content="@AleksandrovskyV">
+
+<title>fenerate?</title>
+
+<!-- comment 
+-->
+
+<script src="./core/init.js"></script>
+
+<link rel="stylesheet" href="./libs/codemirror.min.css">
+<link rel="stylesheet" href="style.css">
+
+<script src="./libs/opentype.min.js"></script>
+<script src="./libs/fonteditor-core.min.js"></script>
+
+<!--
+this package from:
+https://github.com/hybridherbst/opentype.js
+
+source opentype.js (without variable implementation):
+https://unpkg.com/opentype.js@latest/dist/opentype.min.js
+-->
+
+<script src="./libs/polygon-clipping.umd.min.js"></script>
+<script src="./libs/paper-core.min.js"></script>
+<script src="./libs/decompress_binding.js"></script>
+<script src="./libs/marked.umd.js"></script>
+
+<!-- CM v5.62.0 --> 
+<script src="./libs/codemirror.js"></script> 
+<script src="./libs/javascript.min.js"></script>
+
+
+<!-- package from Favicon.im & manifest -->
+<link rel="icon" href="./assets/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+<link rel="manifest" href="./assets/manifest.json">
+
+</head>
+<body>
+
+<div id="mobileOverlay">Only for Desktop..</div>
+
+<input type="file" id="bgFileInput" accept="image/*" hidden>
+
+<svg id="svg-parser" class="tempsvg"></svg>
+
+<div id="overlayDrop" class="fs"></div>
+
+
+<div id="gCanvasWrapper">
+
+	<div id="gCanvasControls" class="" hidden>
+
+			<div id="gCanvasRowBtns" class="BarBtns alb" >
+
+				<button id="canvasSwitchBtn" class="sqbutton" title="Canvas Mode">
+					<img src="./assets/svg/spline.svg" alt="Free Transform" width="30" height="30">
+				</button>
+
+				<div id="gRefBtns" class="barBtnsLine">
+					<button id="gExpandBgLine" class="sqbutton" title="Background Image">BG</button>
+
+					<button id="gLoadBg" class="sqbutton" title="Load Image from Disk" hidden>
+						<img src="./assets/svg/folder.svg" alt="folder icon" width="30" height="30">
+					</button>
+
+				     <div id="gSliderRow" class="sliderRow expandable" hidden>
+						<input id="gBgOpacityRange" type="range" min="0.0" max="1" step="0.01" value="0.30" aria-label="background opacity"/>
+					</div>
+				</div>
+			</div>
+
+			<div id="gCanvasLbBtns" class="BarBtns arb " >
+
+				<div id="gExportBtns" class="barBtnsLine reverseRow">	
+					<button id="resetSplineBtn" class="sqbutton long" title="Reset Spline">RESET</button>
+				</div>
+
+				
+
+				<div id="gExportBtns" class="barBtnsLine">	
+					<button id="gCanvasExportBtn" class="sqbutton long" title="Export Font">EXPORT</button>
+				</div>
+			</div>
+	    </div>
+
+	<canvas id="globalCanvas" width="1920" height="1080" ></canvas>
+</div>
+
+
+<div id="startDescriptor" class="oCenterPanel">
+		<div id="pusher" class="fg" ></div>
+
+		<div id="startDescriptorA" class="rWrap ca " >
+			<p>Based on </p>
+			<a class="link" href="https://kekee000.github.io/fonteditor/index-en.html" >fontEditor</a>
+			<p>,</p>
+			<a class="link" href="https://github.com/hybridherbst/opentype.js" >openType fork</a>
+			<p>,</p>
+			<a class="link" href="https://github.com/paperjs/paper.js/" >paper.js</a>
+			<p>,</p>
+			<a class="link" href="https://github.com/markedjs/marked" >marked</a>
+			<p>,</p>
+		</div>
+
+		<div id="startDescriptorB" class="rWrap ca " >
+			<a class="link" href="https://github.com/byte-foundry/prototypo/" >protoTyp-O</a>
+			<p></p>
+			<p>&</p>
+			<a class="link" href="https://github.com/codemirror/dev/" >codeMirror</a> <p></p>
+			<p>— [</p> <a id="sheart" href="">❤</a> <p></p> <p>]</p>
+		</div>
+</div>
+
+<div id="startWindow" class="oCenterPanel">
+	<h2 id="startHeader" style="font-weight: 500;">Font Editor?</h2>
+
+	<div id="startTextRow" class="rWrap ca" >
+		<input type="text"  id="mainLetterLine" class="mInput main" value="А Нука">
+		<button id="generateApply">!</button>
+	</div>
+
+	<p id="mainComment">... or Drag & Drop TTF / OTF font file</p>
+</div>
+
+
+<div id="mainWindow" hidden>
+
+	<div id="topMenu"> 
+		<div id="topMenuInfo" class="rWrap fg " >
+			<div id="SpecialControls" class="cWrap"></div>
+			<div id="InfoSection" class="cWrap"></div>
+		</div>
+
+		<div id="topMenuBtnRows" class="rWrap ca" >
+			<button id="mAboutBtn" class="mbutton" hidden>[ ABOUT ]</button>
+			<button id="mExportBtn" class="mbutton" hidden>[ SAVE ]</button>
+			<button id="mGlyphMapBtn" class="mbutton active" hidden>[ MAP ]</button>
+	     	<button id="mExpandMenuBtn" class="mbutton mend" >&nbsp;*&nbsp;</button>
+		</div>
+	</div>
+
+	<div id="innerLayout">
+
+		<div id="leftColumn">
+
+		  <div id="recieptContainer" hidden>
+		  </div>
+			
+			<div id="cmapContainer" >
+
+				<div id="switchLabelWrapper" class="rWrap ca" >
+				
+					<button id="hideAllTilesBtn" class="sqbutton cmap" title="Hide all Map objects" >
+						<img src="./assets/svg/triangleWhiteFill.svg" alt="folder icon" width="30" height="30">
+					</button>
+
+					<button id="switchCmapViewer" class="mbutton cmap "><span>[ GLYPHS ]</span></button>
+				
+					<div id="searchWrapper" hidden>
+							<p id="sLogout" ></p>
+							<input type="text"  id="searchBar" class="mSearch" value="" placeholder="[ ctrl+f ] > hide sort...">   
+				  </div> 
+				</div>
+
+			   <div id="cmapSpecial" class="rWrap">
+			   		<div id="leftBorder"></div>
+			  		<div id="cmpaScrollWrapper">
+				      		<div id="cmap"></div> 
+				   </div>
+				   <div id="leftBorder"></div>
+			  </div>
+
+		  </div>
+
+		</div>
+
+		<div id="eCanvasWrapper" hidden> 
+
+			<div id="eCanvasTextInfo" hidden></div>
+
+			<div id="eCanvasRowBtns" class="BarBtns alt">
+				
+				<div id="RefBtns" class="barBtnsLine">
+					<button id="eExpandBgLine" class="sqbutton" title="Background Image">BG</button>
+
+					<button id="eLoadBg" class="sqbutton" title="Load Image from Disk" hidden>
+						<img src="./assets/svg/folder.svg" alt="folder icon" width="30" height="30">
+					</button>
+
+					<div id="eSliderRow" class="sliderRow expandable" hidden>
+						<input id="eBgOpacityRange" type="range" min="0.0" max="1" step="0.01" value="0.30" aria-label="background opacity"/>
+					</div>
+				</div>
+
+
+				<button id="resetDeltasBtn" class="sqbutton ex" title="Reset User Deltas" hidden>RESET DELTAS</button>
+
+
+				<div id="InstrBtns" class="barBtnsLine" hidden>
+					<button id="SELECTOR" class="sqbutton" title="Tools">
+						<img src="./assets/svg/selectA.svg" alt="selection tool" width="30" height="30">
+					</button>
+					<button id="PEN" class="sqbutton" title="Pen Tool" hidden>
+						<img src="./assets/svg/penPlus.svg" alt="pen tool" width="30" height="30">
+					</button>
+					<button id="RECT" class="sqbutton" title="Rect Tool" hidden>
+						<img src="./assets/svg/rect.svg" alt="rect tool" width="30" height="30">
+					</button>
+				</div>
+
+				<div id="HornersBtns" hidden>
+					<button id="bezFill" class="sqbutton" title="Group Transform">
+						<img src="./assets/svg/triangleWhiteFill.svg" alt="rect tool" width="30" height="30">
+					</button>
+
+					<button id="bezCorner" class="sqbutton active" title="Points Transform">
+						<img src="./assets/svg/triangleBlackStroke.svg" alt="selection tool" width="30" height="30">
+					</button>
+				</div>
+
+	  		</div>
+
+			<canvas id="editorCanvas" width="1000" height="1000" ></canvas>
+			
+			<div id="edButtonsRow" class="rWrap jc">
+			 	<button id="eCloseBtn" class="mbutton">close</button>
+				<button id="eProcedBtn" class="mbutton" hidden >[ f ] type</button>
+				<button id="eGuidesBtn" class="mbutton"><span class="hotkey">g</span>uide</button>
+				<button id="eBezierBtn" class="mbutton"><span class="hotkey">h</span>orner</button>
+				<button id="eStatsBtn" class="mbutton"><span class="hotkey">s</span>tats</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div id="exportPanel" class="oCenterPanel oBgStyle" hidden>
+	<div id="wrapperSetting" class="cWrap panelStyle">
+		
+		<p>Export Fenerate Options...</p>
+		
+		<div id="eFontnameLine" class="rWrap" >
+			<p>familyName</p>
+			<input type="text"  id="eFontname" class="mInput" value="">
+		</div>
+
+		<div id="eStylenameLine" class="rWrap" >
+			<p>styleName</p>
+			<input type="text"  id="eStylename" class="mInput" value="">
+		</div>
+
+		<div id="eDesignerLine" class="rWrap" >
+			<p>designer</p>
+			<input type="text"  id="eDesigner" class="mInput" value="">
+		</div>
+
+		<div id="eComment" class="rWrap ca" hidden></div>
+
+		<div id="eBtnslRow" class="rWrap jc" >
+			<button id="eBtnClosePanel"  class="mbutton ms" >[ ✕ ]</button>
+			<button id="eBtnExportRecipe"  class="mbutton" title="it`s a .json..." >[&nbsp;&nbsp;.FE ? ]</button>
+			<button id="eBtnExportFont" class="mbutton me" >[ SAVE .TTF ]</button>
+		</div>
+
+	</div>
+</div>
+
+<div id="oAddElementBlock" class="oCenterPanel oBgStyle" hidden>
+	<div id="wrapperSetting" class="cWrap panelStyle">
+
+		<h2 id="oPanelLabel">Create mew glyph...</h2>
+
+		<div id="oNameLine" class="rWrap ca" >
+			<label id="oNameLabel" for="oNameInput">GlyphName</label>
+			<input type="text"  id="oNameInput" class="mInput" value="">
+		</div>
+
+		<div id="oUnicodeLine" class="rWrap ca" >
+			<label id="oUnicodeLabel" for="oUnicodeInput">Unicode</label>
+			<input type="text"  id="oUnicodeInput" class="mInput" value="" disabled>
+		</div>
+
+
+		<div id="oMultiSettingBtnsLine" class="rWrap jc" hidden>
+			<div class="selectWrapper">
+			  <select class="mSelect" id="languageSelect">
+			    <option value="RU">RU</option>
+			    <option value="US">US</option>
+			  </select>
+			</div>
+
+			<button id="oAddLovercases" class="mbutton presel" >[ LOVERCASE ]</button>
+			<button id="oAddNumbers" class="mbutton" >[ 4 ]</button>
+			<button id="oAddSymbols" class="mbutton me" >[ ! ]</button>
+		</div>
+
+		<div id="oMultiLine" class="rWrap ca" hidden>
+			<input type="text"  id="oMultiAddInput" class="mInput fg" value="">
+		</div>
+
+
+		<div id="oTypeSelectLine" class="rWrap ca" hidden>
+			<label id="oTypeLabel" for="oTypeSelect">cType</label>
+			
+			<div class="selectWrapper" >
+			  <select class="mSelect" id="oTypeSelect">
+			    <option value="fill">Fill</option>
+			    <option value="mask">Mask</option>
+			  </select>
+			</div>
+
+		</div>
+
+
+		<div id="oCommentLine" class="rWrap" hidden></div>
+
+		<div id="oAddElemsBtns" class="rWrap jc" >
+			<button id="cancelPushBtn" class="mbutton" >[ ✕ ]</button>
+			<button id="pushBtn"  class="mbutton" >[ ► ]</button>
+		</div>
+
+	</div>
+</div>
+
+<div id="aboutPanel" class="oCenterPanel oBgStyle" hidden>
+	<div id="aboutWrapper" class="oWrapper panelStyle">
+
+		<button id="closeAboutBtn" class="sqbutton close-btn">✕</button>
+		
+		<div id="readmeContent" class="markdownBody" ></div>
+		
+		<div id="readmeFramePast"> </div>
+
+		<div id="logoFrame"> 
+			<img src="./assets/svg/logo.svg" alt="folder icon" width="118" height="118" title="Elephant Regular">
+		</div>
+	
+	</div>
+</div>
+
+<!-- работают локально из index потому что не модуль -->
+<script src="./core/utils.js"></script>
+<script src="./core/ProcedureGlyph.js"></script>
+<script src="./core/GlyphRecipes.js"></script>
+
+
+<!-- <script type="module" src="main.js"></script>
+-->
+<script src="main.js"></script>
+
+</body>
+</html>

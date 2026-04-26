@@ -1,0 +1,168 @@
+
+Windows Viewer > Дырка на пересеченнии путей которые просто накладываются = есть
+C4D > Дырка на пересеченнии путей которые просто накладываются = нет
+AE / PS / AI > Дырка на пересеченнии путей которые просто накладываются = нет
+* Если в строке есть символы, которых нет в шрифте - adobe старается силой переключится на другой шрифт
+* Решил отображение в Windows Viewer c помощью перегонки в .ttf формат - нуждается в проверке путей
+
+
+Если путь вставляется из AI с boolean дыркой:
+- рендеринг svg\contour - корректный | экспорт - корректный
+
+Если путь имеет несколько элементов и они заходят друг на друга и не являются дыркой
+- рендеринг svg\contour - корректный | на экспорте вылезает дырка на пересечениях обычного наложения
+> решено
+
+
+/* CopyPaste (FromAI) / 50% 
+- GlyphEditorCanvas "CopyPaste Message" in bezier mode (rename bezieMode to pathMode?)
+- ExpndBtn Case for rendering (Slice modes rendering) > Rescruct Task > New UI Logic (Grp Transform / Point Edit) 50%
+- MatchWidth and Align to Bottom +
+
++++++ CheckHole \ Merge Path Func (Tool, CanvasRender Message)
+
+- Мне не нравится parser элемент на странице как способ применения трансформации. Есть множество альтернативных способов, 
+но структурно я думаю всё это можно закрыть одной библоитекой (слишком уж очевидная задача исторически).
+
+- Мне не нравится расхождение процесса конвертации svg <> cmd (сейчас это очень грязно).
+
+- Replace to libs?
+/// svg-path-parser  /?/ unpkg.com/svg-path-parser@1.1.0 
+/// abs-svg-path     /?/ unpkg.com/abs-svg-path@0.1.1
+/// normalize-svg-path /?/ normalize-svg-path@1.1.0
+
+
+- Support T\A cases
+- Drag&Drop svg?
+*/
+
+
+
+/* NEED UI CANVAS RESOLVE
+Добавить индикатор зума и перенести инфо +
+С наведённой мышью на Guides мы должны иметь возможность его сдвигать. 50%
+В основном это должно касаться ascender, descender, xHeight, capHeight, RSB (
+Подумать над логикой взаимодействия (fedit, guides, path)
+*/
+
+/* SUPPORT BG IN GLYPH EDITOR / 90%
+RECONSTRUCT LOGIC EXPAND BUTTON +
+*/
+
+/* SAVE .FE FORMAT
+1. Хранение SampleBgImage
+2. Хранение ...Glyphs SampleBgImage
+3. Хранение Codeblock
+4. Хранение PathPreserves
+*/ 
+
+
+/* NEED UI -> SAMPLE CANVAS RESOLVE
+PATH ALIGHT | LINE ALIGN
+*/
+
+/* NEED UI HTML RESOLVE 2 (50%)
+Стиль для глифа с генерированным рецептом +
+Сейчас после изменения верхний ползунков - стиль template пропадает
+> пропадает в целом стиль активного
+После открытия и редактирования = убрать стиль
+*/ 
+
+
+////////////////////////////////////////////////////////////// NOT WARNING
+
+/* SHEME ALL CODE
+
+*/
+
+
+/* SHORCTS / 70%
+Добавить шорткаты
+*/
+
+UI HTML RESOLVE 2
+FONT LIST + MSELECTOR
+*/
+
+/* OTHER
+Add Setting Export Btn if Generate Font +
+Align CM5 and CM6 styles and positions block in html +
+*/
+
+/* HINTS
+
+Структурировать ReadmeContent на два блока ( fontEditor / fonts / task list )
+Logo Animation Action
+*/
+
+
+////////////////////////////////////////////////////////////// LOGIC 
+
+
+/* THINK ABOUT 1
+Обращение через внутренюю прослойку p.w \ p.t \ p.ch это конечно коротко, но может запутать в дальнейшем
+Это большая архитектурная дилемма - штука работает со шрифтами
+и скорее всего нужно ориентироваться на исходные имена и структуру шрифтовых файлов. xHeight / xh близко, но для тех кто использует может стать барьером
+
+Таже проблемы введённого glyphArray - и возможно даже хуже.
+Он также как и файл шрифта содержит index/ glyph / name
+И всегда необходимо следить за ним, что вызывает огромное архитектурное опасение
+*/
+
+/* THINK ABOUT 2
+Codemirror был добавлен как способ на прототипе быстро тестировать "рецепты"
+Его можно было бы заменить UI прослойкой (элемент = готовому методу)
+Это также бы спасло от проблем невомозможных рецептов и потенциальные проблемы с eval()
+*/
+
+/* IDEA CONSTRUCT 1
+COMPONENTS MAP и COMPONENTS ELEMENTS
+Элементы которые можно раздублировать по всем глифам одномоментно
+Трёх типов? Path \ Mask \ Code
+*/
+
+/* IDEA CONSTRUCT 2
+По хорошему язык рецептов должен содержать "некие" правила именования переменных
+const bridge = мост между stem
+const cldLeg = central left > down  
+const cltLeg  = central left > top
+
+Чтобы можно было обратиться сразу ко всем объектом и изменить эти значения
+*/
+
+/* IDEA CONSTRUCT 3
+Синхронизация между рецептом и редактированием в Canvas - это наверное самое интересное
+По хорошему меняя объект в Canvas видеть его измения в CodeEditor = perfection level
+*/
+
+
+/* IDEA CONSTRUCT 4
+bezier mode == add to codeEditor "preserve method"
+*/
+
+////////////////////////////////////////////////////////////// SOLVED
+
+/* PROBLEM 1
+Проблема Preserve Variable Font 
+При открытии сохранённого файла шрифта на Windows
+Некоторые глифы отображают path с дырками на пересечении 
+Проблема только с их отображением на платформе Windows?
+*/ 
+
+/* PROBLEM 2
+Сейчас существует отдельный флаг под Variable Font на экспорт (он экспортирует через старый rawFont)
+Проблема с Epilogue-VariableFont_wght.ttf - после Preserve при попытки чтении сохранённого файла на Windows - происходит ошибка
+*/
+
+/* PROBLEM 3 AND HTML + JS LOGIC
+UNDO FOR Preserv Font and Buttons + tempFontFile
+*/
+
+/* NEED UI HTML RESOLVE 1
+Иконка поиска с фильтрацией если кол-во элементов cmap больше чем помещаются на экране
+*/
+
+
+
+
+

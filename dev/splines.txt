@@ -1,0 +1,116 @@
+https://en.wikipedia.org/wiki/Spline_interpolation
+
+
+Bake Spline (or reverseConstruction by segment.epts - this source pts for cmd)
+
+Click on Pen Lines Object (iteration logic handles)
+Change Logic Angle and Weight penLines 
+
+Click Circle Group Object Wrapper (Segment Divided by group)
+Read penLines Data for CustomWeight
+
+
+/////
+
+В js (графический API) я могу нарисовать сплайны через:
+(Q) Quadratic имеет 1 handle и строится через quadraticCurveTo
+(С) Cubic  имеет 2 handle и строится через curveTo
+Разница между ними лишь в кол-во handles и интерполяции, верно?
+
+Когда компьютер рисует сплайн, под капотом он всё равно ставит высчитанное
+кол-во сегментов  исходя из типа кривой и текущего разрешения, верно?
+
+Если мне требуется получить равномерное кол-во точек между двумя точками
+Cubic сплайна, мне потребуется отдельная обёртка?
+
+//
+
+Что даст мне Bezier.js?
+Допустим у меня есть массив точек + левый и правый handle
+
+type: 'C',
+anchor: { x: cmd.x, y: cmd.y },
+handle1: { x: cmd.x1, y: cmd.y1 },
+handle2: { x: cmd.x2, y: cmd.y2 }
+
+И мне нужно будет получить новый массив точек, с апроксимацией всего пути
+(равномерные сегменты вдоль всей кривой). Ближайший аналог - 
+нода в houdini resample.
+
+Bezier.js даст мне эту возможность?
+
+////
+
+                        Paper.js	                        Bezier.js
+Точка по дистанции	getPointAt(offset) (встроено)	        Нужна связка getTforLength + get
+Работа с цепочкой	Автоматически для всего Path	        Нужно считать вручную для каждого сегмента
+Вес	                Тяжелая (~200 КБ), это целый движок	Легкая (~20 КБ), только математика
+Зависимости	        Требует Canvas/DOM (обычно)	        Чистая математика (работает в Node.js без оберток)
+
+const path = new paper.Path(); // Ваш созданный путь
+// ... (добавление сегментов)
+
+const step = 10; // Шаг в пикселях (как в Houdini Resample)
+const points = [];
+
+for (let i = 0; i <= path.length; i += step) {
+    const pt = path.getPointAt(i); // Магия здесь: получение точки по физической длине
+    points.push(pt);
+}
+
+///
+
+
+Так как теперь ты в контексте объясню. Моя задача расширить класс StemLine до возможности работы с ней как c кривой (имеющая handle). 
+По сути мне нужно создать объект аналогичный (или расширить аккуратно StemLine), чтобы у меня был не просто линейный путь из двух точек, на краях которых расположен penLines. 
+А сделать извилистую дорогу из точек, допустим для формировании буквы о. Я вижу что буква О будет также состоять из четырех точек. 
+PenLine - в данном контексте это пользовательские крутилки ширины и управления на canvas.
+Как ты видишь сам StemLin ужеe жёстко завязан на гетерах и PenLines. StemLines может принят несколько точек и склонировать по ним PenLines.
+ShapeObject я добавлял просто для проверки. Как ты видишь я уже сделал некий handle чтобы выравнивать копию тестового ShapeObject. (Handle не клонируется также как ShapeObject.
+
+Основные сложности которые меня беспокоят. 
+Я не против использование сложного ShapeObject так как он уже есть в проекте, но используется в другой части кода. Но я я не понимаю, как правильно его
+"подружить с логикиой под дублирование (когда на вход Stem Lines несколько точек). Второе я не пониаю, как корректно рисовать направляющие, которые у нас строятся
+из penLines. По сути мы можем пройтсь по всем точкам ShapeObject и создать для левой и правой стойки массив с полями offset(адаптивная ширина между penLines /2 ) и angle (нормализованый  угол) 
+и использовать этот массив просто для отрисовки на canvas. (Благо ShapeObject уже содержит методы getPoint (который может выдать нужный угол)
+
+///
+
+Но b spline не пройдет через точки splinePoints в таком случае. Я говорю у нас несостыковка архитектурная. 
+Либо мы будем строить StemLine вместе с PenLines по уже готовому b spline (там есть методы получения точки) и rawPts выставлять по кол-ву точек b spline (тогда penLines автоматически будут на прямой).   
+
+Пример: мы создали StemLine > вкинули pts > построили b spline > из неё создали rawPts > penLines
+При изменении дельты penLines > пушим дельту в bspline
+
+Либо мы будем держать массив с копиями bspline по rawPts (0-1)(1-2) + handle [bsplineA, handle]. Тогда это будет open b-spline и линия будет упираться в каждый сегмент.
+А для визуализации держать отдельный массив с оффсетами + angle
+
+В обоих случаях, архитектуру придётся переписывать. Вопрос что из этого менее безполезненно.
+
+
+Но cp1 (segment 0) должен влиять на конечный segment и его cp 1
+cp2 (segment 0) 
+
+///
+
+
+function drawCap(ctx, pos, r=8, color, state="noselect") {
+    ctx.beginPath();
+    ctx.arc( pos.?x ? pos.?x : pos[0], pos.?y ? pos.?y : pos[1], r, 0, Math.PI * 2);
+
+    if(state === "select"){
+        ctx.fillStyle = color;
+        ctx.fill();
+    }else{
+        ctx.fillStyle = "#1c1c1c"; // цвет бг на канвасе
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+}
+
+drawCap(ctx, this.mid, 8, this.color,  "noselect"); // mid.x, mid,y
+drawCap(ctx, [this.xStart(), this.yStart()], 8, this.color, "noselect" ); // [x,y]
+
+
+
