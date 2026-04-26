@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<title>Font Editor</title>
+<link rel="stylesheet" href="style.css">
+<script src="opentype.min.js"></script>
+  <!--
+   	this package from:
+	https://github.com/hybridherbst/opentype.js
+
+    source opentype.js (without variable implementation):
+    https://unpkg.com/opentype.js@latest/dist/opentype.min.js
+  -->
+</head>
+
+<body>
+
+<div id="dropzone" >
+<h2>Font Editor?</h2>
+<button id="genButton">FENERATE!</button>
+<p>... or Drag & Drop TTF / OTF font file</p>
+</div>
+
+<div id="cPanel" class="hidden" >
+
+	<div id="cwrapper" class="extend">
+		<h3>Information</h3>
+		<div id="Information_section"></div>
+		<div id="variation"></div>
+	</div>
+
+	<div id="rwrapper" class="bmenu">
+		<button id="GBOARD" class="mbutton" >[ GLYPH EDITOR ]</button>
+		<button id="SBOARD" class="mbutton" >[ SAMPLE BOARD ]</button>
+		<button id="EXPORTBUTTON" class="mbutton" >[ EXPORT ]</button>
+	</div>
+</div>
+
+<div id="innerLayout">
+
+    <div id="scrollWrapper">
+        <div id="cmap"></div>
+    </div>
+
+	<div id="editor" class="hidden">
+		<canvas id="edCanvas" width="1000" height="1000"></canvas>
+		<div id="rwrapper" class="emenu">
+			<button id="bezierMode"  class="mbutton">bezie</button>
+			<button id="closeEditor" class="mbutton">close</button>
+		</div>
+	</div>
+
+</div>
+
+
+<script src="main.js"></script>
+
+</body>
+</html>
