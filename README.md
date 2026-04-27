@@ -74,7 +74,7 @@ Cтанет доступна по порту, что вбил<br>
 
 <br><br>
 
-###  SpecialNote:
+###  Special notes:
 
 ####  Процесс сборки форка opentype.js:
 ... запросил у google ai исправленный package.json файл (актуальный на текущий момент)<br>
@@ -84,9 +84,14 @@ npm run dist (minjs)
 
 <br><br>
 
-### FutureTask:
+### Future tasks:
 
+- Reduce Logic
+- Make Stuct document
+- Complete Spline Class & align logic
+- Complete Pen Line UI controls
 - Construct Serif-Class...
+
 <br>
 
 ![StemConstr](./assets/img/StemConstrUpdateSite.jpg)
