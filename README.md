@@ -87,9 +87,9 @@ npm run dist (minjs)
 ### Future tasks:
 
 - Reduce Logic
-- Make Stuct document
+- Make struct document
 - Complete Spline Class & align logic
-- Complete Pen Line UI controls
+- Complete PenLines user controls
 - Construct Serif-Class...
 
 <br>
