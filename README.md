@@ -27,7 +27,7 @@ SideEffect?  - Восстановление подхода prototypo [`*`](https
 
 <br>
 
-### NowFeatures:
+### Now Features:
 - Drag and Drop OTF\TTF fonts
 - Generate Font like Prototype Style
 - Drag and Drop Reference Image
@@ -36,7 +36,7 @@ SideEffect?  - Восстановление подхода prototypo [`*`](https
 
 <br><br>
 
-### UsedLibs<br>
+### Used Libs:<br>
 Текущий public build содержит только минифицированные библиотеки, для стабильности:<br>
 
 [opentype](https://github.com/opentypejs/opentype.js) / как основа для парсинга font files<br>
