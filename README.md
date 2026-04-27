@@ -91,6 +91,7 @@ npm run dist (minjs)
 - Complete Spline Class & align logic
 - Complete PenLines user controls
 - Add compatibility ESJS module strategy
+- Think about Component Elements (only ideas)
 - Construct Serif-Class...
 
 <br>
