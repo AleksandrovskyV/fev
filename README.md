@@ -90,6 +90,7 @@ npm run dist (minjs)
 - Make struct document
 - Complete Spline Class & align logic
 - Complete PenLines user controls
+- Add compatibility ESJS module strategy
 - Construct Serif-Class...
 
 <br>
