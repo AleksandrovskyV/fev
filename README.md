@@ -25,7 +25,7 @@
 
 SideEffect?  - Восстановление подхода prototypo [`*`](https://vimeo.com/user4849193)<br> 
 
-<br><br>
+<br>
 
 ### NowFeatures:
 - Drag and Drop OTF\TTF fonts
@@ -56,7 +56,8 @@ index.html станет дооступна из браузера по адрес
 или : python -m http.server 8080<br>
 Cтанет доступна по порту, что вбил<br>
 
-<br><br>
+
+<br><br><br>
 
 ### References:
 
@@ -88,6 +89,6 @@ npm run dist (minjs)
 - Construct Serif-Class...
 <br>
 
-![StemConstr](./dev/docs/StemConstrUpdateSite.jpg)
+![StemConstr](./assets/img/StemConstrUpdateSite.jpg)
 
 <br><br><br>
