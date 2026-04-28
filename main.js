@@ -5,8 +5,8 @@
 
 console.log("Check Libs:", {
     opentype: !!window.opentype,
-    recipes: !!window.GLYPH_RECIPES,
-    classes: !!window.ProcedureGlyph
+    recipes:  !!window.GLYPH_RECIPES,
+    classes:  !!window.ProcedureGlyph
     //console.log(polygonClipping);
 });
 
@@ -8943,8 +8943,8 @@ function showIframeFallback() {
     const container = document.getElementById('readmeFramePast');
     const rdm = document.getElementById('readmeContent'); 
     rdm.style.padding = "0";
-    rdm.style.paddingTop = "24px"; // Большое T, без дефиса
-    rdm.style.paddingRight = "12px"; // Большое T, без дефиса
+    rdm.style.paddingTop = "24px";
+    rdm.style.paddingRight = "12px";
     container.style.width = "100%";
     container.style.height = "70vh"; 
 
@@ -8969,20 +8969,86 @@ function showIframeFallback() {
     readmeFrame.hidden = false;
 }
 
-
 async function loadReadme() {
+    if (window.location.protocol === 'file:') {
+        showIframeFallback();
+        return; 
+    }
+    
+    const docs = [
+        { id: 'readmeAbout', path: './README.md' },
+        { id: 'readmeBible', path: './assets/docs/bible_ru.md' }
+    ];
+
+    const btnContainer = document.getElementById('rBtnsReadme');
+    const contentWrapper = document.getElementById('readmeContent');
+
+    const unhide = (targetId) => {
+        btnContainer.querySelectorAll('button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.target === targetId);
+        });
+
+        Array.from(contentWrapper.children).forEach(div => {
+            div.hidden = (div.id !== targetId);
+        });
+    };
+
+    for (const doc of docs) {
+        try {
+            const response = await fetch(doc.path);
+            const markdown = await response.text();
+            const element = document.getElementById(doc.id);
+            
+            if (element) {
+                element.innerHTML = marked.parse(markdown);
+            }
+        } catch (err) {
+            //console.error(`Ошибка загрузки ${doc.id}:`, err);
+            showIframeFallback();
+        }
+    }
+
+    // 4. Вешаем клики на кнопки (они уже есть в HTML с нужными классами)
+    btnContainer.querySelectorAll('button').forEach(btn => {
+        btn.onclick = () => unhide(btn.dataset.target);
+    });
+}
+
+async function loadReadmeOld() {
     if (window.location.protocol === 'file:') {
         showIframeFallback();
         return; 
     }
 
     try {
-        const response = await fetch('README.md');
-        const markdown = await response.text();
+        const responseAbout = await fetch('./README.md');
+        const responseBible = await fetch('./assets/docs/bible_ru.md');
+
+        const markdownAbout = await responseAbout.text();
+        const markdownBible = await responseBible.text();
+
+        const aboutContent = marked.parse(markdownAbout);
+        const bibleContent = marked.parse(markdownBible);
+
         
-        // Превращаем Markdown в HTML
-        const htmlContent = marked.parse(markdown);
-        document.getElementById('readmeContent').innerHTML = htmlContent;
+        const rBtnsReadme = document.getElementById('rBtnsReadme');
+        document.getElementById('readmeAbout').innerHTML = aboutContent;
+        document.getElementById('readmeBible').innerHTML = bibleContent;
+
+        const unhide = (element = "about") => {
+            const isAbout = element === "about";
+
+            // 1. Переключаем видимость контента
+            document.getElementById('readmeAbout').hidden = !isAbout;
+            document.getElementById('readmeBible').hidden = isAbout;
+
+            // 2. Переключаем активный класс на кнопках
+            document.getElementById('readmeAboutBtn').classList.toggle('active', isAbout);
+            document.getElementById('readmeBibleBtn').classList.toggle('active', !isAbout);
+        };
+                
+        document.getElementById('readmeAboutBtn').onclick = () => unhide("about");
+        document.getElementById('readmeBibleBtn').onclick = () => unhide("bible");
 
     } catch (err) {
         //console.error("Не удалось загрузить README:", err);

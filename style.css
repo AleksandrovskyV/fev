@@ -299,6 +299,23 @@ margin-right: 0px !important;
 margin-right: 42px !important; 
 }
 
+#rBtnsReadme{
+direction: ltr;
+}
+
+.lbutton {
+padding: 12px 8px;
+font-size: 24px;
+margin: 0px;
+border: 0px;
+text-align: left; 
+}
+
+button.lbutton.active {
+text-decoration: underline;
+color: #888;
+background: none;
+}
 
 /* Special Cases */
 #cmapContainer {
