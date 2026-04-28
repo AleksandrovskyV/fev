@@ -1,3 +1,27 @@
+const lerp = (a,b,t) => a+(b-a)*t;
+
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+
+const map = (n, start1, stop1, start2, stop2) => {
+  // Защита: если диапазон нулевой, возвращаем start2
+  if (Math.abs(start1 - stop1) < 0.000001) return start2;
+  return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
+};
+
+const fit = (n, start1, stop1, start2, stop2) => { // clamped Values
+  const val = map(n, start1, stop1, start2, stop2);
+  return clamp(val, Math.min(start2, stop2), Math.max(start2, stop2));
+};
+
+const mid = (p1, p2) => ({ x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 });
+
+window.lerp = lerp;
+window.clamp = clamp;
+window.map = map;
+window.fit = fit;
+
+// Animation
+
 const easeInQuad  = (t) => t * t;          // t^2 // quad 
 const easeInCubic = (t) => t * t * t;      // t^3 // cubic
 
@@ -67,11 +91,6 @@ const easeCustom = (t, startInf = 0.4, endInf = 0.9) => {
   return 3 * Math.pow(1 - st, 2) * st * y1 + 3 * (1 - st) * Math.pow(st, 2) * y2 + Math.pow(st, 3);
 };
 
-window.easeExp = easeExp;
-window.easeBlend = easeBlend;
-window.easeCustom = easeCustom;
-
-
 const easeCustomAlt = (t, startInf = 0.4, endInf = 0.9, p = 3) => {
   const x1 = startInf;
   const x2 = 1 - endInf;
@@ -97,3 +116,7 @@ const easeCustomAlt = (t, startInf = 0.4, endInf = 0.9, p = 3) => {
   const u = 1 - st;
   return 3 * u * Math.pow(st, p - 1) + Math.pow(st, p);
 };
+
+window.easeExp = easeExp;
+window.easeBlend = easeBlend;
+window.easeCustom = easeCustom;

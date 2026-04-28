@@ -1,28 +1,5 @@
 // All Classes for Procedure Glyph
 
-
-const lerp = (a,b,t) => a+(b-a)*t;
-
-const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
-
-const map = (n, start1, stop1, start2, stop2) => {
-  // Защита: если диапазон нулевой, возвращаем start2
-  if (Math.abs(start1 - stop1) < 0.000001) return start2;
-  return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
-};
-
-const fit = (n, start1, stop1, start2, stop2) => { // clamped Values
-  const val = map(n, start1, stop1, start2, stop2);
-  return clamp(val, Math.min(start2, stop2), Math.max(start2, stop2));
-};
-
-const mid = (p1, p2) => ({ x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 });
-
-window.lerp = lerp;
-window.clamp = clamp;
-window.map = map;
-window.fit = fit;
-
 const GLYPH_DELTAS = {};
 window.GLYPH_DELTAS = GLYPH_DELTAS;
 
