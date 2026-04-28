@@ -91,7 +91,7 @@ OpenType это спецификация файла (его структура) 
 
 3. WOFF / WOFF2 (Web Open Font Format) -  сжатый контейнер для веба.<br>
 Суть: Это тот же OTF или TTF, но упакованный в «архив» специально для браузеров,<br>
-чтобы шрифт быстрее скачивался на сайт. Файлы WOFF2 обычно на 30% меньше, чем WOFF.
+чтобы шрифт быстрее скачивался на сайт. Файлы WOFF2 обычно на 30% меньше, чем WOFF<br>
 https://github.com/opentypejs/opentype.js/issues/183#issuecomment-1147228025
 
 VF (Variable Fonts)<br>
