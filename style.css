@@ -926,26 +926,6 @@ border: 0px solid #333;
 overflow: hidden; 
 }
 
-#mobileOverlay {
-  display: none;
-}
-
-@media (max-width: 768px) {
-    #mobileOverlay {
-        position: fixed;
-        inset: 0;
-        background: #000;
-        color: #666;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-family: system-ui, -apple-system, sans-serif;
-        font-size: 24px;
-        z-index: 9999;
-        padding: 20px;
-}
-
 /* Codemirror Custom  */
 #recieptContainer{
 padding: 6px 12px;
@@ -1007,3 +987,22 @@ border-left: 2px solid white !important;
     color: #639bd9 !important; /* Фиолетовый (как keyword) */
 }
 
+#mobileOverlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+    #mobileOverlay {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 24px;
+        z-index: 9999;
+        padding: 20px;
+}
