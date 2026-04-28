@@ -85,11 +85,9 @@ OpenType это спецификация файла (его структура) 
 2). Apple/Google > TrueType [glyf table] > расширение [.ttf]<br>
 
 Расширения:<br>
-1. OTF (OpenType Font)
-Суть: Используют кубические кривые Безье
+1. OTF (OpenType Font) - ипользуют кубические кривые Безье
 
-2. TTF (TrueType Font) 
-Суть: Используют квадратичные кривые Безье
+2. TTF (TrueType Font) - Используют квадратичные кривые Безье
 
 3. WOFF / WOFF2 (Web Open Font Format) -  сжатый контейнер для веба.
 Суть: Это тот же OTF или TTF, но упакованный в «архив» специально для браузеров, 
@@ -98,7 +96,7 @@ https://github.com/opentypejs/opentype.js/issues/183#issuecomment-1147228025
 
 VF (Variable Fonts)<br>
 Суть: внутри файла хранятся таблицы вариативности, которые заменяют собой целую пачку обычных файлов.
-Adobe чаще кладет сюда расширенную таблицу CFF2 (.otf), а Google — таблицу gvar под glyf (.ttf).
+Adobe чаще кладет сюда расширенную таблицу CFF2 (.otf), а Google — таблицу gvar под glyf (.ttf)
 
 
 <br><br>
