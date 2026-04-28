@@ -9008,7 +9008,6 @@ async function loadReadme() {
         }
     }
 
-    // 4. Вешаем клики на кнопки (они уже есть в HTML с нужными классами)
     btnContainer.querySelectorAll('button').forEach(btn => {
         btn.onclick = () => unhide(btn.dataset.target);
     });
