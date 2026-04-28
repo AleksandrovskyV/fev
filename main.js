@@ -8977,7 +8977,8 @@ async function loadReadme() {
     
     const docs = [
         { id: 'readmeAbout', path: './README.md' },
-        { id: 'readmeBible', path: './assets/docs/bible_ru.md' }
+        { id: 'readmeExtend', path: './assets/docs/dev_ru.md' },
+        { id: 'readmeBible', path: './assets/docs/bible_ru.md' },
     ];
 
     const btnContainer = document.getElementById('rBtnsReadme');
