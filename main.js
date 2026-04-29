@@ -1912,10 +1912,7 @@ function updateTracking(objArray, applyPos = true, pos ){
             currentPos += (glyphAW * obj.scale * tracking);
         });
 
-
-    // 4. Apply position
-
-    if(applyPos){
+    if(applyPos){ // 4. Apply position for free canvas mode 
 
         const sampleObj = objArray[0];
         const params = getGlyphSVGParams(sampleObj.item);
