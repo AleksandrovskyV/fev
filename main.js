@@ -2173,6 +2173,10 @@ function setupVariationControls() {
             input.oninput = (e) => {
 
                 handleChange = true;
+                
+                if (!shapeSequenceData && gCanvasMode === "align") {
+                    recordShapeSequence();
+                }
 
                 const val = parseFloat(e.target.value);
                 valSpan.innerText = val;
@@ -2189,10 +2193,6 @@ function setupVariationControls() {
                     callGuidesMode(true);
                 }
                 
-                if (!shapeSequenceData && gCanvasMode === "align") {
-                    recordShapeSequence();
-                }
-
                 // Перерисовываем весь генеративный шрифт
                 redrawAllProcedure()
                 
