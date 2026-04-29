@@ -1,33 +1,34 @@
 # About extend
 
 ## Shortcuts: 
+Список горячих клавиш...
 
-- [space] - переключает режимы Canvas (free / align on spline)
+#### For MAP
+- [ M ] - скрывается/отображает панель MAP
+- [ С ] - переключает отображения MAP (glyphs / components)
+- [ ctrl + F ] - скрывается/отображает поисковой элемент MAP
 
-- [M] - скрывается/отображает панель MAP
-- [С] - переключает отображения MAP (glyphs / components)
-- [ctrl + F] - скрывается/отображает поисковой элемент MAP
 
-
-#### For Global Canvas
-- [ctrl + A] - выделяет все элементы на полотне
-- [delete] / [backspace] - удаляет элемент с полотна
+#### For globalCanvas
+- [ space ] - переключает режимы Canvas (free / align on spline)
+- [ ctrl + A ] - выделяет все элементы на полотне
+- [ delete ] или [ backspace ] - удаляет элемент с полотна
 
 
 #### For Glyph Preview
-- [S] - открывает информацию о глифе / Alt: [I]
-- [F] - режим редактирования дельт (f-type) ( из условия fenerative font)
-- [G] - режим редактирования Guidelines
-- [H] - режим редактирования точек (horner) / Alt: [P],[B] 
+- [ S ] - открывает информацию о глифе. Alt: [ I ]
+- [ F ] - режим редактирования дельт (f-type) ( из условия fenerative font)
+- [ G ] - режим редактирования Guidelines
+- [ H ] - режим редактирования точек (horner). Alt: [ P ], [ B ] 
 
 
 // При условии процедурного подхода и активного режима (f-type)
-- [shift] (toggle) - снэпинг к констрейнам из условия, что они присутствуют в рецепте
+- [ shift ] (toggle) - снэпинг к констрейнам из условия, что они присутствуют в рецепте
 
 // В режиме редактирования точек (horner)
-- [ctrl + z] - undo
-- [ctrl + y] - redo
-- [ctrl + v] - full rewrite paste from SVG buffer 
+- [ ctrl + z ] - undo
+- [ ctrl + y ] - redo
+- [ ctrl + v ] - full rewrite paste from SVG buffer 
 
 <br><br>
 
