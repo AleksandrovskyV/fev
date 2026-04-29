@@ -5461,7 +5461,7 @@ function updateParamsFromCanvas(label, value) {
 
         if(!font) return
 
-        if (label === "RSB"){ // advancedWidth уникальный для глифа
+        if (label === "RSB"){ // advanceWidth уникальный для глифа
 
             let glyph = currentItem?.glyph;
             if (!glyph) return console.log("Глиф не определен", glyph);
