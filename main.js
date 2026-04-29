@@ -444,12 +444,18 @@ let animationActive = true;
 
 
 let tracking  = 0.75;
-/*
-let spOffset = 0;
-if(index === 0) spOffset = 18;
-if(index === 1) spOffset = 8;
-if(index === 2) spOffset = -8;
-*/
+
+function selectAllObjectInCanvas(){
+    //console.log("selectAllObjectInCanvas")
+    
+    selectedObjects = [];
+            
+    gCanvasObjects.forEach(obj => {
+        selectedObjects.push(obj);
+    });
+
+    renderGlobalCanvas();
+}
 
 function autoPushOnCanvas() {
 
@@ -8840,6 +8846,12 @@ window.onkeydown = (e) => {
         return safeReturn()
     }
 
+    if (pressedCtrl && cod === "KeyA" && !pressedShift) {
+        e.preventDefault(); // убирает всплывалку 
+        selectAllObjectInCanvas();
+        return safeReturn()
+    }
+
     if (cod === "KeyG") {
         callGuidesMode();
         /*
@@ -8876,7 +8888,7 @@ window.onkeydown = (e) => {
         return safeReturn();     
     }
     else if (cod === "KeyU") recordShapeSequence(true);
-    else if (cod === "KeyA" || cod === "Enter" || cod === "Space") callSwitchCanvasMode();
+    else if (cod === "KeyD" || cod === "Enter" || cod === "Space") callSwitchCanvasMode();
     else if (cod === "KeyS") callGlyphInfoMode(); //callGlobalCanvas();
     else if (cod === "KeyP" || cod === "KeyB" || cod === "KeyH") callBezierMode();
     else if (cod === "KeyF"){
@@ -9012,48 +9024,6 @@ async function loadReadme() {
     btnContainer.querySelectorAll('button').forEach(btn => {
         btn.onclick = () => unhide(btn.dataset.target);
     });
-}
-
-async function loadReadmeOld() {
-    if (window.location.protocol === 'file:') {
-        showIframeFallback();
-        return; 
-    }
-
-    try {
-        const responseAbout = await fetch('./README.md');
-        const responseBible = await fetch('./assets/docs/bible_ru.md');
-
-        const markdownAbout = await responseAbout.text();
-        const markdownBible = await responseBible.text();
-
-        const aboutContent = marked.parse(markdownAbout);
-        const bibleContent = marked.parse(markdownBible);
-
-        
-        const rBtnsReadme = document.getElementById('rBtnsReadme');
-        document.getElementById('readmeAbout').innerHTML = aboutContent;
-        document.getElementById('readmeBible').innerHTML = bibleContent;
-
-        const unhide = (element = "about") => {
-            const isAbout = element === "about";
-
-            // 1. Переключаем видимость контента
-            document.getElementById('readmeAbout').hidden = !isAbout;
-            document.getElementById('readmeBible').hidden = isAbout;
-
-            // 2. Переключаем активный класс на кнопках
-            document.getElementById('readmeAboutBtn').classList.toggle('active', isAbout);
-            document.getElementById('readmeBibleBtn').classList.toggle('active', !isAbout);
-        };
-                
-        document.getElementById('readmeAboutBtn').onclick = () => unhide("about");
-        document.getElementById('readmeBibleBtn').onclick = () => unhide("bible");
-
-    } catch (err) {
-        //console.error("Не удалось загрузить README:", err);
-        showIframeFallback();
-    }
 }
 
 loadReadme();

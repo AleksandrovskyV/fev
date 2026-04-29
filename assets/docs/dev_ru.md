@@ -2,13 +2,14 @@
 
 ## Shortcuts: 
 
-#### Global
+- [space] - переключает режимы Canvas (free / align on spline)
+
 - [M] - скрывается/отображает панель MAP
 - [F] - скрывается/отображает поисковой элемент MAP
 - [С] - переключает отображения MAP (glyphs / components)
 
-
-#### In Canvas
+#### In Global Canvas
+- [ctrl + A] - выделяет все элементы на полотне
 - [delete] / [backspace] - удаляет элемент с полотна
 
 
