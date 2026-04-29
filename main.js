@@ -444,7 +444,6 @@ let animationActive = true;
 
 
 let tracking  = 0.75;
-
 function selectAllObjectInCanvas(){
     //console.log("selectAllObjectInCanvas")
 
@@ -456,6 +455,7 @@ function selectAllObjectInCanvas(){
 
     renderGlobalCanvas();
 }
+
 
 function autoPushOnCanvas() {
 
@@ -481,7 +481,7 @@ function autoPushOnCanvas() {
 
         tempScale = targetHeight / params.capHeight;
         
-        //console.log("tempsScale", tempScale,params.capHeight, targetHeight);
+        //console.log("tempsScale", tempScale, params.capHeight, targetHeight);
 
         tempScale = tempScale*scaleFactor
         targetHeight = targetHeight*scaleFactor
@@ -489,10 +489,8 @@ function autoPushOnCanvas() {
         //console.log("targetHeight (px):", targetHeight, "tScale:", tempScale)
     }
 
-
     const cx = 0;
     const cy = targetYPosition ? world.toLocalY(targetYPosition) : 0;
-
 
     const arrayLetter = USER_INPUT_VAL;
 
@@ -1872,7 +1870,7 @@ function updateSplineLogic(mode="mouse", newBatch, pos){
     });
 }
 
-function updateTracking(objArray, align = true, pos ){
+function updateTracking(objArray, applyPos = true, pos ){
     if (!objArray || !objArray.length) return;
 
     //const tracking = 0.75;
@@ -1914,14 +1912,25 @@ function updateTracking(objArray, align = true, pos ){
             currentPos += (glyphAW * obj.scale * tracking);
         });
 
+
     // 4. Apply position
-    if(align){
+
+    if(applyPos){
+
+        const sampleObj = objArray[0];
+        const params = getGlyphSVGParams(sampleObj.item);
+        const targetYoffset = params.capHeight * sampleObj.scale;
+
         objArray.forEach((obj) => {
             const xInGroup = posMap[obj.logicalIndex];
             if (xInGroup !== undefined) {
-                const resultX = startOffset + xInGroup;
-                obj.x = resultX;
-                obj.y = targetY; 
+                const glyphAW = obj.item.glyph.advanceWidth ?? 500;
+                const currentGlyphWidth = glyphAW * obj.scale * tracking;
+                //const resultX = startOffset + xInGroup;
+                
+                // Добавляем половину ширины, как в autoPush
+                obj.x = startOffset + xInGroup + (currentGlyphWidth / 2); // old resultX
+                obj.y = targetY + (targetYoffset / 2); // old targetY
             }
         });
     }
@@ -5958,7 +5967,16 @@ resetSplineBtn.onclick = () => {
         // нужен новый метод
     }else{
         // нужен новый метод 
+
         updateLogIndices();
+
+        // Сброс трекинга при необходимости
+        //tracking = 2.0;
+
+        gCanvasObjects.map((obj, index) => {
+            obj.scale = tempScale;
+        })
+
         updateTracking(gCanvasObjects, true, { x: 0, y: 0 });
     }
     
