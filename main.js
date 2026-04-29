@@ -447,7 +447,7 @@ let tracking  = 0.75;
 
 function selectAllObjectInCanvas(){
     //console.log("selectAllObjectInCanvas")
-    
+
     selectedObjects = [];
             
     gCanvasObjects.forEach(obj => {
@@ -5957,7 +5957,9 @@ resetSplineBtn.onclick = () => {
         resetSpline();
         // нужен новый метод
     }else{
-        // нужен новый метод
+        // нужен новый метод 
+        updateLogIndices();
+        updateTracking(gCanvasObjects, true, { x: 0, y: 0 });
     }
     
     renderGlobalCanvas();
