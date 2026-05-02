@@ -888,8 +888,8 @@ display: flex;
 align-items: center;
 justify-content: center;
 font-family: sans-serif;
-
 }
+
 .ghost-badge {
 position: absolute;
 top: -12px;
@@ -947,6 +947,7 @@ line-height: 1.5;
 .CodeMirror-cursor {
 border-left: 2px solid white !important;
 }
+
 .CodeMirror-measure { visibility: hidden; position: absolute; }
 .CodeMirror-selected { background: rgba(153, 255, 119, 0.5) !important; }
 .CodeMirror-activeline-background { background: transparent !important; }
@@ -1005,4 +1006,5 @@ border-left: 2px solid white !important;
         font-size: 24px;
         z-index: 9999;
         padding: 20px;
+    }
 }
