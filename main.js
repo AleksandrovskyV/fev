@@ -8800,6 +8800,12 @@ window.onkeydown = (e) => {
     const isY = cod === 'KeyY';
     const isF = cod === 'KeyF';
 
+    if (key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      window.location.href = "https://vsky.space";
+    }
+
     if(startwindow){
         const skipbtns = (cod === "KeyF" || cod === "Space");
 
